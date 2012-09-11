@@ -1,4 +1,4 @@
-package com.omega.smartqueue;
+package com.omega.smartqueue.controllers;
 
 import java.text.DateFormat;
 import java.util.Date;
