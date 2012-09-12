@@ -28,7 +28,7 @@ public class RegisterController {
 		LoginInformation loginInformation = new LoginInformation(username,password);
 		loginInformationDAO.insert(loginInformation);
 
-		return "register";
+		return "registerSuccess";
 	}
 	
 }

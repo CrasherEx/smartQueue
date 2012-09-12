@@ -8,19 +8,10 @@
 	</head>
 	<body>
 		<h1>
-			Register:
+			Register Successfull
 		</h1>
-		<form action="submitRegister" method="post">
-			Username: <input type="text" name="username" />
-			<br />
-			Password: <input type="text" name="password" />
-			<br />
-			<input type="submit" />
-		</form>
-		<p>
-			<a href="home">
+		<a href="home">
 			Home
-			</a>
-		</p>
+		</a>
 	</body>
 </html>

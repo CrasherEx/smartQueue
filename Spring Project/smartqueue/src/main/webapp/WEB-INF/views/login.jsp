@@ -8,9 +8,9 @@
 	</head>
 	<body>
 		<h1>
-			Register:
+			Login:
 		</h1>
-		<form action="submitRegister" method="post">
+		<form action="submitLogin" method="post">
 			Username: <input type="text" name="username" />
 			<br />
 			Password: <input type="text" name="password" />

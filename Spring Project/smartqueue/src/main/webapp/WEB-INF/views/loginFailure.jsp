@@ -8,19 +8,17 @@
 	</head>
 	<body>
 		<h1>
-			Register:
+			Login Failure
 		</h1>
-		<form action="submitRegister" method="post">
-			Username: <input type="text" name="username" />
-			<br />
-			Password: <input type="text" name="password" />
-			<br />
-			<input type="submit" />
-		</form>
 		<p>
-			<a href="home">
-			Home
-			</a>
+			<% out.print((String) request.getAttribute("message")); %>
 		</p>
+		<a href="login">
+			Login
+		</a>
+		<br/>
+		<a href="home">
+			Home
+		</a>
 	</body>
 </html>
