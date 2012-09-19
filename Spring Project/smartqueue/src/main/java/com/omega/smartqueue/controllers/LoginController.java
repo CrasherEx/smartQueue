@@ -1,5 +1,7 @@
 package com.omega.smartqueue.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.ApplicationContext;
@@ -28,7 +30,8 @@ public class LoginController {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 	 
 		LoginInformationDAO loginInformationDAO = (LoginInformationDAO) context.getBean("loginInformationDAO");
-		LoginInformation loginInformation = loginInformationDAO.findByUsername(username);
+		List<LoginInformation> loginInformationList = loginInformationDAO.selectByUsername(username);
+		LoginInformation loginInformation = loginInformationList.get(0);
 		if(loginInformation == null)
 		{
 			request.setAttribute("message", "User " + username + " doesn't exist;");

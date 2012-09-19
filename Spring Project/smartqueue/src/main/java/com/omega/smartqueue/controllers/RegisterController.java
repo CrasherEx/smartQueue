@@ -26,7 +26,7 @@ public class RegisterController {
 	 
 		LoginInformationDAO loginInformationDAO = (LoginInformationDAO) context.getBean("loginInformationDAO");
 		LoginInformation loginInformation = new LoginInformation(username,password);
-		loginInformationDAO.insert(loginInformation);
+		loginInformationDAO.create(loginInformation);
 
 		return "registerSuccess";
 	}

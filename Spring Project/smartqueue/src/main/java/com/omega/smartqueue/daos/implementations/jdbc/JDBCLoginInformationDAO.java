@@ -1,13 +1,13 @@
 package com.omega.smartqueue.daos.implementations.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.omega.smartqueue.daos.LoginInformationDAO;
+import com.omega.smartqueue.daos.implementations.jdbc.rowmappers.LoginInformationRowMapper;
 import com.omega.smartqueue.model.LoginInformation;
 
 public class JDBCLoginInformationDAO implements LoginInformationDAO
@@ -19,88 +19,55 @@ public class JDBCLoginInformationDAO implements LoginInformationDAO
 		this.dataSource = dataSource;
 	}
 
-	public void insert(LoginInformation loginInformation)
+	public void create(LoginInformation loginInformation)
 	{
-		String sqlCommandBase;
-		sqlCommandBase = "INSERT INTO LOGININFO (USERNAME,PASSWORD) VALUES (?, ?)";
-		
-		Connection connection = null;
-		
-		try
-		{
-			connection = dataSource.getConnection();
-			
-			PreparedStatement preparedStatement = connection.prepareStatement(sqlCommandBase);
-				preparedStatement.setString(1,loginInformation.getUsername());
-				preparedStatement.setString(2,loginInformation.getPassword());
-			preparedStatement.executeUpdate();
-			preparedStatement.close();
-		}
-		catch(SQLException sqlException)
-		{
-			throw new RuntimeException(sqlException);
-		}
-		finally
-		{
-			if(connection != null)
-			{
-				try
-				{
-					connection.close();
-				}
-				catch(SQLException sqlException)
-				{
-					
-				}
-			}
-		}
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	    jdbcTemplate.update("INSERT INTO logininfo (username, password) VALUES(?,?)",
+	    		new Object[] { loginInformation.getUsername(), loginInformation.getPassword() });
 	}
 
-	public LoginInformation findByUsername(String username)
+	@SuppressWarnings("unchecked")
+	public List<LoginInformation> select(LoginInformation loginInformation)
 	{
-		String sqlCommandBase;
-		sqlCommandBase = "SELECT * FROM LOGININFO WHERE USERNAME = ?";
-		
-		Connection connection = null;
-		
-		try
-		{
-			connection = dataSource.getConnection();
-			
-			PreparedStatement preparedStatement = connection.prepareStatement(sqlCommandBase);
-				preparedStatement.setString(1,username);
-			LoginInformation loginInformationToReturn = null;
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if(resultSet.next())
-			{
-				loginInformationToReturn = new LoginInformation(
-						resultSet.getString("USERNAME"),
-						resultSet.getString("PASSWORD")
-						);
-			}
-			resultSet.close();
-			preparedStatement.close();
-			return loginInformationToReturn;
-		}
-		catch(SQLException sqlException)
-		{
-			throw new RuntimeException(sqlException);
-		}
-		finally
-		{
-			if(connection != null)
-			{
-				try
-				{
-					connection.close();
-				}
-				catch(SQLException sqlException)
-				{
-					
-				}
-			}
-		}
-		
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate
+	    	.query("SELECT username, password FROM logininfo WHERE username = ? AND password = ?",
+	            new Object[] { loginInformation.getUsername(), loginInformation.getPassword() },
+	            new LoginInformationRowMapper());
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<LoginInformation> selectByUsername(String username)
+	{
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate
+	    	.query("SELECT username, password FROM logininfo WHERE username = ?",
+	            new Object[] { username },
+	            new LoginInformationRowMapper());	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<LoginInformation> selectAll()
+	{
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate
+	    	.query("SELECT username, password FROM logininfo",
+	            new Object[] {},
+	            new LoginInformationRowMapper());	
+	}
+
+	public void delete(LoginInformation loginInformation)
+	{
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcTemplate.update("DELETE FROM logininfo WHERE username= ? AND password = ?",
+	        new Object[] { loginInformation.getUsername(), loginInformation.getPassword() });
+	}
+	
+	public void deleteAll()
+	{
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcTemplate.update("DELETE FROM logininfo");
+	}
+
 
 }
