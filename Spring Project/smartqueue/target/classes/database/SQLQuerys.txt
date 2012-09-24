@@ -1,0 +1,40 @@
+/*
+	Arquivo criado para guardar os comandos de SQL para criar/consultar o banco de dados MySQL
+*/
+
+CREATE TABLE users
+(
+	user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(30) NOT NULL,
+	last_name VARCHAR(30) NOT NULL,
+	email VARCHAR(50) NOT NULL,
+	password VARCHAR(50) NOT NULL,
+	telephone VARCHAR(20) NOT NULL,
+	cpf VARCHAR(20) NOT NULL
+);
+
+/*
+
+CREATE TABLE users
+(
+	user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(30) default NULL,
+	last_name VARCHAR(30) default NULL,
+	email VARCHAR(50) NOT NULL,
+	password VARCHAR(50) NOT NULL,
+	telephone VARCHAR(20) default NULL,
+	cpf VARCHAR(20) default NULL,
+	cep VARCHAR(20) default NULL
+	CONSTRAINT c_e_p_cep_fk
+	FOREIGN KEY (cep)
+	REFERENCES c_e_p (cep)
+);
+
+CREATE TABLE c_e_p
+(
+	cep VARCHAR(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	city VARCHAR(30) NOT NULL,
+	state VARCHAR(30) NOT NULL
+);
+
+*/
