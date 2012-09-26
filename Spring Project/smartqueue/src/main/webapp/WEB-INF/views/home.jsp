@@ -1,18 +1,17 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 	<head>
-		<jsp:include page="/WEB-INF/views/externalIncludes/bootsstrapIncludes.jsp" />
+		<jsp:include page="/WEB-INF/views/includes/css.jsp" />
 		<title>Home</title>
 	</head>
 	<body>
-		<jsp:include page="/WEB-INF/views/bars/topBar.jsp" />
+		<jsp:include page="/WEB-INF/views/bars/top/main.jsp" />
 		<div class="container">
-			<jsp:include page="/WEB-INF/views/rows/row1/logoAndLogin.jsp" />
-			<jsp:include page="/WEB-INF/views/rows/row2/changeCity.jsp" />
-			<jsp:include page="/WEB-INF/views/rows/row3/searchBar.jsp" />
-			<jsp:include page="/WEB-INF/views/rows/row4/helloWorldAndFavorites.jsp" />
+			<jsp:include page="/WEB-INF/views/rows/city.jsp" />
+			<jsp:include page="/WEB-INF/views/rows/search.jsp" />
+			<jsp:include page="/WEB-INF/views/rows/results.jsp" />
 		</div>
+		<jsp:include page="/WEB-INF/views/includes/js.jsp" />
 	</body>
 </html>

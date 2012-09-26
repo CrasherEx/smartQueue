@@ -1,0 +1,35 @@
+.navbar .btn, .navbar .btn-group 
+{
+	margin-top: 20px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.logo
+{
+	height: 50px;
+	width: 243px;
+	position: relative;
+}
+
+body 
+{
+	background-color: #EBEBFB;
+	/*background: url(../images/background/background.png);*/
+	background-repeat: repeat;
+}
+
+.well
+{
+	background-color: #FFFFFF;
+	border: 1px solid #D4D4D4;
+}
+
+.navbar-inner
+{
+	background-color: white;
+	background-image: -moz-linear-gradient(top,white,white);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(white),to(white));
+	background-image: -webkit-linear-gradient(top,white,white);
+	background-image: -o-linear-gradient(top,white,white);
+}

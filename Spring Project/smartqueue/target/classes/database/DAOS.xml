@@ -6,5 +6,8 @@
 	<bean id="loginInformationDAO" class="com.omega.smartqueue.daos.implementations.jdbc.JDBCLoginInformationDAO">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	<bean id="customerDAO" class="com.omega.smartqueue.daos.implementations.jdbc.JDBCCustomerDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
  
 </beans>

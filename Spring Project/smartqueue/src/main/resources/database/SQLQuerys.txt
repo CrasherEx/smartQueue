@@ -2,6 +2,22 @@
 	Arquivo criado para guardar os comandos de SQL para criar/consultar o banco de dados MySQL
 */
 
+CREATE TABLE customers
+(
+	customer_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(30) NOT NULL,
+	last_name VARCHAR(30) NOT NULL,
+	email VARCHAR(50) NOT NULL,
+	password VARCHAR(50) NOT NULL,
+	telephone VARCHAR(20) NOT NULL,
+	gender CHAR(1) NOT NULL,
+	date_of_birth DATE NOT NULL,
+	state CHAR(2) NOT NULL,
+	city VARCHAR(30) NOT NULL,
+	address VARCHAR(30) NOT NULL
+);
+
+/*
 CREATE TABLE users
 (
 	user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -12,6 +28,7 @@ CREATE TABLE users
 	telephone VARCHAR(20) NOT NULL,
 	cpf VARCHAR(20) NOT NULL
 );
+*/
 
 /*
 
@@ -25,9 +42,9 @@ CREATE TABLE users
 	telephone VARCHAR(20) default NULL,
 	cpf VARCHAR(20) default NULL,
 	cep VARCHAR(20) default NULL
-	CONSTRAINT c_e_p_cep_fk
-	FOREIGN KEY (cep)
-	REFERENCES c_e_p (cep)
+		CONSTRAINT c_e_p_cep_fk
+		FOREIGN KEY (cep)
+		REFERENCES c_e_p (cep)
 );
 
 CREATE TABLE c_e_p
