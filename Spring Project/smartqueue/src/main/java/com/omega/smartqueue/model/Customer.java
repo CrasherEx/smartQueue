@@ -15,6 +15,7 @@ public class Customer
 	String state;
 	String city;
 	String address;
+	
 	public int getCustomer_id()
 	{
 		return customer_id;

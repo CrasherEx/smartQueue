@@ -1,26 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Register</title>
+		<jsp:include page="/WEB-INF/views/includes/css.jsp" />
+		<title>Registro</title>
 	</head>
 	<body>
-		<h1>
-			Register:
-		</h1>
-		<form action="submitRegister" method="post">
-			Username: <input type="text" name="username" />
-			<br />
-			Password: <input type="text" name="password" />
-			<br />
-			<input type="submit" />
-		</form>
-		<p>
-			<a href="home">
-			Home
-			</a>
-		</p>
+		<jsp:include page="/WEB-INF/views/bars/top/main.jsp" />
+		<div class="container">
+			<jsp:include page="/WEB-INF/views/rows/register/customer/form.jsp" />
+		</div>
+		<jsp:include page="/WEB-INF/views/includes/js.jsp" />
 	</body>
 </html>

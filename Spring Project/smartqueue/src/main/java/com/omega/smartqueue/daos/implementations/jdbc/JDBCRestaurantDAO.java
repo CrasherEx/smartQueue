@@ -10,9 +10,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.omega.smartqueue.daos.RestaurantDAO;
-import com.omega.smartqueue.daos.implementations.jdbc.rowmappers.CustomerRowMapper;
 import com.omega.smartqueue.daos.implementations.jdbc.rowmappers.RestaurantRowMapper;
-import com.omega.smartqueue.model.Customer;
 import com.omega.smartqueue.model.Restaurant;
 
 /**
