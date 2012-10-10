@@ -1,4 +1,15 @@
-<div class="control-group">
+<% 
+	Boolean isThereAnError = (Boolean) request.getAttribute("inputDateError");
+	String error = "";
+	if(isThereAnError != null)
+	{
+		if(isThereAnError == true)
+		{
+			error = "error";
+		}
+	}
+%>
+<div class="control-group <%=error%>">
 	<label class="control-label">
 		Data de Nascimento
 	</label>

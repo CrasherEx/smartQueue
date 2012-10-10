@@ -1,5 +1,7 @@
 package com.omega.smartqueue.model;
 
+import java.sql.Date;
+
 import com.omega.smartqueue.enums.Gender;
 
 public class Customer
@@ -11,7 +13,7 @@ public class Customer
 	String password;
 	String telephone;
 	Gender gender;
-	String dateOfBirth;
+	Date dateOfBirth;
 	String state;
 	String city;
 	String address;
@@ -44,7 +46,7 @@ public class Customer
 	{
 		return gender;
 	}
-	public String getDateOfBirth()
+	public Date getDateOfBirth()
 	{
 		return dateOfBirth;
 	}
@@ -62,10 +64,26 @@ public class Customer
 	}
 	public Customer(int customer_id, String name, String lastName,
 			String email, String password, String telephone, Gender gender,
-			String dateOfBirth, String state, String city, String address)
+			Date dateOfBirth, String state, String city, String address)
 	{
 		super();
 		this.customer_id = customer_id;
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.telephone = telephone;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
+		this.state = state;
+		this.city = city;
+		this.address = address;
+	}
+	public Customer(String name, String lastName,
+			String email, String password, String telephone, Gender gender,
+			Date dateOfBirth, String state, String city, String address)
+	{
+		super();
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;

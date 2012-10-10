@@ -1,10 +1,29 @@
-<div class="control-group">
+<% 
+	Boolean isThereAnError = (Boolean) request.getAttribute("inputStateError");
+	String error = "";
+	if(isThereAnError != null)
+	{
+		if(isThereAnError == true)
+		{
+			error = "error";
+		}
+	}
+%>
+<div class="control-group <%=error%>">
 	<label class="control-label" for="inputState">
 		Estado
 	</label>
 	<div class="controls">
-		<select class="span3" id="inputState">
-			<option value="none" selected>- Selecione um Estado -</option>
+		<% 
+			String lastInputValue = request.getParameter("inputState");
+			String inputFieldValue = "";
+			if(lastInputValue != null)
+			{
+				inputFieldValue = lastInputValue;
+			}
+		%>
+		<select class="span3" id="inputState" name="inputState">
+			<option value="none" <%if(inputFieldValue.equals("") || inputFieldValue.equals("none"))out.print("selected");%> >- Selecione um Estado -</option>
 			<%
 				String[][] states = {
 					{"Acre","AC"},
@@ -38,7 +57,7 @@
 				for(int i=1;i<=27;i++)
 				{
 			%>
-				<option value="<%=states[i-1][1]%>"><%=states[i-1][0] + " (" + states[i-1][1] + ")"%></option>	
+				<option value="<%=states[i-1][1]%>" <%if(inputFieldValue.equals(states[i-1][1]))out.print("selected");%>><%=states[i-1][0] + " (" + states[i-1][1] + ")"%></option>	
 			<%
 				}
 			%>

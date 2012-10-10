@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.omega.smartqueue.daos.implementations.jdbc.resultsetextractors.CustomerResultSetExtractor;
 import com.omega.smartqueue.daos.implementations.jdbc.resultsetextractors.RestaurantResultSetExtractor;
 
 /**

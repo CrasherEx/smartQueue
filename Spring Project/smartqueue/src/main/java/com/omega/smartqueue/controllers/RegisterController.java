@@ -1,16 +1,30 @@
 package com.omega.smartqueue.controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.omega.smartqueue.daos.LoginInformationDAO;
-import com.omega.smartqueue.model.LoginInformation;
+import com.omega.smartqueue.daos.CustomerDAO;
+import com.omega.smartqueue.enums.Gender;
+import com.omega.smartqueue.model.Customer;
+import com.omega.smartqueue.validators.AddressValidator;
+import com.omega.smartqueue.validators.CityValidator;
+import com.omega.smartqueue.validators.DateValidator;
+import com.omega.smartqueue.validators.EmailValidator;
+import com.omega.smartqueue.validators.GenderValidator;
+import com.omega.smartqueue.validators.LastNameValidator;
+import com.omega.smartqueue.validators.NameValidator;
+import com.omega.smartqueue.validators.PasswordValidator;
+import com.omega.smartqueue.validators.StateValidator;
+import com.omega.smartqueue.validators.TelephonePrefixValidator;
+import com.omega.smartqueue.validators.TelephoneValidator;
 
 @Controller
 public class RegisterController {
@@ -21,109 +35,176 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(value = "/submitRegister", method = RequestMethod.POST)
-	public String submitRegister(
-								@RequestParam("inputName") String inputName, 
-								@RequestParam("inputLastName") String inputLastName,
+	public String submitRegister(HttpServletRequest request) {
+	
+		String inputName = request.getParameter("inputName");
+		String inputLastName = request.getParameter("inputLastName");
 
-								@RequestParam("inputDayOfBirth") String inputDayOfBirth,
-								@RequestParam("inputMonthOfBirth") String inputMonthOfBirth,
-								@RequestParam("inputYearOfBirth") String inputYearOfBirth,
-								
-								@RequestParam("inputGender") String inputGender,
-								
-								@RequestParam("inputEmail") String inputEmail, 
-								@RequestParam("confirmInputEmail") String confirmInputEmail, 
-
-								@RequestParam("inputPassword") String inputPassword,
-								@RequestParam("confirmInputPassword") String confirmInputPassword,
-								
-								@RequestParam("inputTelephonePrefix") String inputTelephonePrefix,
-								@RequestParam("inputTelephone") String inputTelephone,
-							
-								@RequestParam("inputAddress") String inputAddress,
-								@RequestParam("inputState") String inputState,
-								@RequestParam("inputCity") String inputCity
-
-								) {
+		String inputDayOfBirth = request.getParameter("inputDayOfBirth");
+		String inputMonthOfBirth = request.getParameter("inputMonthOfBirth");
+		String inputYearOfBirth = request.getParameter("inputYearOfBirth");
 		
-		boolean isThereAnError = false;
+		String inputGender = request.getParameter("inputGender");
+		
+		String inputEmail = request.getParameter("inputEmail");
+		String confirmInputEmail = request.getParameter("confirmInputEmail");
+
+		String inputPassword = request.getParameter("inputPassword");
+		String confirmInputPassword = request.getParameter("confirmInputPassword");
+		
+		String inputTelephonePrefix = request.getParameter("inputTelephonePrefix");
+		String inputTelephone = request.getParameter("inputTelephone");
+	
+		String inputAddress = request.getParameter("inputAddress");
+		String inputState = request.getParameter("inputState");
+		String inputCity = request.getParameter("inputCity");
+		
 		ArrayList<String> errorMessages = new ArrayList<String>();
-		int integerInputDayOfBirth;
-		int integerInputMonthOfBirth;
-		int integerInputYearOfBirth;
 		
-		if(inputDayOfBirth == "none" || inputMonthOfBirth == "none" || inputYearOfBirth == "none")
+		NameValidator nameValidator = new NameValidator();
+		ArrayList<String> nameValidatorErrors = nameValidator.validate(inputName);
+		if(nameValidatorErrors.size() > 0)
 		{
-			isThereAnError = true;
-			errorMessages.add("A data de nascimento não está preenchida totalmente.");
+			request.setAttribute("inputNameError",true);
+			errorMessages.addAll(nameValidatorErrors);
 		}
-		else{
-			try
-			{
-				integerInputDayOfBirth = Integer.parseInt(inputDayOfBirth);
-				integerInputMonthOfBirth = Integer.parseInt(inputMonthOfBirth);
-				integerInputYearOfBirth = Integer.parseInt(inputYearOfBirth);
+		
+		LastNameValidator lastNameValidator = new LastNameValidator();
+		ArrayList<String> lastNameValidatorErrors = lastNameValidator.validate(inputLastName);
+		if(lastNameValidatorErrors.size() > 0)
+		{
+			request.setAttribute("inputLastNameError",true);
+			errorMessages.addAll(lastNameValidatorErrors);
+		}
+		
+		DateValidator dateValidator = new DateValidator();
+		ArrayList<String> dateValidatorErrors = dateValidator.validate(inputDayOfBirth, inputMonthOfBirth, inputYearOfBirth);
+		if(dateValidatorErrors.size() > 0)
+		{
+			request.setAttribute("inputDateError",true);
+			errorMessages.addAll(dateValidatorErrors);
+		}
+		
+		GenderValidator genderValidator = new GenderValidator();
+		ArrayList<String> genderValidatorErrors = genderValidator.validate(inputGender);
+		if(genderValidatorErrors.size() > 0)
+		{
+			request.setAttribute("inputGenderError",true);
+			errorMessages.addAll(genderValidatorErrors);
+		}
+		
+		EmailValidator emailValidator = new EmailValidator();
+		ArrayList<String> emailValidatorErrors = emailValidator.validate(inputEmail);
+		if(emailValidatorErrors.size() > 0)
+		{
+			request.setAttribute("inputEmailError",true);
+			errorMessages.addAll(emailValidatorErrors);
+		}
+		else if(confirmInputEmail == null)
+		{
+			request.setAttribute("confirmInputEmailError",true);
+			errorMessages.add("O campo <b>Confirmar E-Mail</b> não confere com o campo <b>E-mail</b>.");
+		}
+		else if(inputEmail.equals(confirmInputEmail) == false)
+		{
+			request.setAttribute("confirmInputEmailError",true);
+			errorMessages.add("O campo <b>Confirmar E-Mail</b> não confere com o campo <b>E-mail</b>.");
+		}
 
-				// Falta alterar o codigo para não aceitar combinações como 30 de Fevereiro (que não existe)
-				if(integerInputDayOfBirth < 1 || integerInputDayOfBirth > 31)
-				{
-					isThereAnError = true;
-					errorMessages.add("O dia de nascimento necessita estar entre 1 e 31, inclusive.");
-				}
-				if(integerInputMonthOfBirth < 1 || integerInputMonthOfBirth > 12)
-				{
-					isThereAnError = true;
-					errorMessages.add("O mês de nascimento necessita estar entre 1 e 12, inclusive.");
-				}
-				if(integerInputYearOfBirth < 1900 || integerInputYearOfBirth > 2012)
-				{
-					isThereAnError = true;
-					errorMessages.add("O ano de nascimento necessita estar entre 1900 e 2012, inclusive.");
-				}
-			}
-			catch(NumberFormatException numberFormatException)
-			{
-				isThereAnError = true;
-				errorMessages.add("Os valores da data de nascimento necessitam ser números inteiros.");
-			}
+		PasswordValidator passwordValidator = new PasswordValidator();
+		ArrayList<String> passwordValidatorErrors = passwordValidator.validate(inputPassword);
+		if(passwordValidatorErrors.size() > 0)
+		{
+			request.setAttribute("inputPasswordError",true);
+			errorMessages.addAll(passwordValidatorErrors);
+		}
+		else if(confirmInputPassword == null)
+		{
+			request.setAttribute("confirmInputPasswordError",true);
+			errorMessages.add("O campo <b>Confirmar Senha</b> não confere com o campo <b>Senha</b>.");
+		}
+		else if(inputPassword.equals(confirmInputPassword) == false)
+		{
+			request.setAttribute("confirmInputPasswordError",true);
+			errorMessages.add("O campo <b>Confirmar Senha</b> não confere com o campo <b>Senha</b>.");
 		}
 		
-		if(inputGender == "none")
+		TelephonePrefixValidator telephonePrefixValidator = new TelephonePrefixValidator();
+		TelephoneValidator telephoneValidator = new TelephoneValidator();
+		ArrayList<String> telephonePrefixValidatorErrors = telephonePrefixValidator.validate(inputTelephonePrefix);
+		ArrayList<String> telephoneValidatorErrors = telephoneValidator.validate(inputTelephone);
+		if(telephoneValidatorErrors.size() > 0 || telephonePrefixValidatorErrors.size() > 0)
 		{
-			isThereAnError = true;
-			errorMessages.add("O campo de gênero necessita ser preenchido.");
-		}
-		else
-		{
-			if(inputGender != "male" && inputGender != "female")
-			{
-				isThereAnError = true;
-				errorMessages.add("Valores para gênero invalidos");
-			}
+			request.setAttribute("inputTelephoneError",true);
+			errorMessages.addAll(telephonePrefixValidatorErrors);
+			errorMessages.addAll(telephoneValidatorErrors);
 		}
 		
-		// Falta checar se o email é um email válido a@a.com
-		if(inputEmail.equals(""))
+		AddressValidator addressValidator = new AddressValidator();
+		ArrayList<String> addressValidatorErrors = addressValidator.validate(inputAddress);
+		if(addressValidatorErrors.size() > 0)
 		{
-			isThereAnError = true;
-			errorMessages.add("O campo email necessita ser preenchido.");
+			request.setAttribute("inputAddressError",true);
+			errorMessages.addAll(addressValidatorErrors);
 		}
-		else
+
+		StateValidator stateValidator = new StateValidator();
+		ArrayList<String> stateValidatorErrors = stateValidator.validate(inputState);
+		if(stateValidatorErrors.size() > 0)
 		{
-			if(inputEmail.equals(confirmInputEmail) == false)
-			{
-				isThereAnError = true;
-				errorMessages.add("O email digitado não está igual à confirmação de email.");
-			}
+			request.setAttribute("inputStateError",true);
+			errorMessages.addAll(stateValidatorErrors);
+		}
+
+		CityValidator cityValidator = new CityValidator();
+		ArrayList<String> cityValidatorErrors = cityValidator.validate(inputCity);
+		if(cityValidatorErrors.size() > 0)
+		{
+			request.setAttribute("inputCityError",true);
+			errorMessages.addAll(cityValidatorErrors);
 		}
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-	 
-		LoginInformationDAO loginInformationDAO = (LoginInformationDAO) context.getBean("loginInformationDAO");
-	//	LoginInformation loginInformation = new LoginInformation(username,password);
-		//loginInformationDAO.create(loginInformation);
+		CustomerDAO customerDAO = (CustomerDAO) context.getBean("CustomerDAO");
+		
+		if(customerDAO.selectByEmail(inputEmail).size()>0)
+		{
+			request.setAttribute("inputEmailError",true);
+			errorMessages.add("Já existe um usuário com esse e-mail registrado.");	
+		}
+		
+		if(errorMessages.size() > 0)
+		{
+			request.setAttribute("errorMessages",errorMessages);
+			for(String s:errorMessages) System.out.println(s);
+			return "register";
+		}
+		else
+		{
+			String telephone = inputTelephonePrefix+inputTelephone;
+			
+			String dateOfBirthString = Integer.parseInt(inputYearOfBirth) + "-" + Integer.parseInt(inputMonthOfBirth) + "-" + Integer.parseInt(inputDayOfBirth);
+			Date dateOfBirth = Date.valueOf(dateOfBirthString);
+			
+			Gender gender = Gender.toGender(inputGender);
+			Customer customerToCreate = new Customer(inputName,inputLastName,inputEmail,
+													inputPassword,telephone,gender,
+													dateOfBirth,inputState,inputCity,
+													inputAddress);
+			customerDAO.create(customerToCreate);
+			return "registerSuccess";
+		}
 
-		return "register";
+	}
+	
+	@RequestMapping(value = "/showUsers", method = RequestMethod.GET)
+	public String showUsers(HttpServletRequest request)
+	{
+		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+		CustomerDAO customerDAO = (CustomerDAO) context.getBean("CustomerDAO");
+		ArrayList<Customer> customers = (ArrayList<Customer>) customerDAO.selectAll();
+		request.setAttribute("customers",customers);
+		return "showUsers";
 	}
 	
 }

@@ -3,6 +3,7 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/views/includes/css.jsp" />
+		<jsp:include page="/WEB-INF/views/includes/icon.jsp" />
 		<title>Registro</title>
 	</head>
 	<body>

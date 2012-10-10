@@ -18,14 +18,15 @@ public class RestaurantResultSetExtractor implements ResultSetExtractor
 {
 	public Object extractData(ResultSet resultSet) throws SQLException
 	{
-		Restaurant restaurant = new Restaurant(resultSet.getInt("restaurant_id"),
-				resultSet.getString("name"),
-				resultSet.getString("email"),
-				resultSet.getString("password"),
-				resultSet.getString("telephone"),
-				resultSet.getString("state"),
-				resultSet.getString("city"),
-				resultSet.getString("adress"));
+		Restaurant restaurant = new Restaurant(	resultSet.getInt("restaurant_id"),
+												resultSet.getString("name"),
+												resultSet.getString("email"),
+												resultSet.getString("password"),
+												resultSet.getString("telephone"),
+												resultSet.getString("state"),
+												resultSet.getString("city"),
+												resultSet.getString("address")
+												);
 
 		return restaurant;
 	}

@@ -1,5 +1,6 @@
 package com.omega.smartqueue.daos.implementations.jdbc;
 
+import java.sql.Types;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -21,18 +22,36 @@ public class JDBCCustomerDAO implements CustomerDAO
 
 	public void create(Customer customer)
 	{
+		String sql = "INSERT INTO customers (name,last_name,email,password,telephone,gender,date_of_birth,state,city,address) VALUES(?,?,?,?,?,?,?,?,?,?)";
+		Object[] values = { customer.getName(), 
+							customer.getLastName(), 
+							customer.getEmail(), 
+							customer.getPassword(), 
+							customer.getTelephone(), 
+							customer.getGender().toString(), 
+							customer.getDateOfBirth(), 
+							customer.getState(), 
+							customer.getCity(),
+							customer.getAddress()
+							};
+		int[] types = {Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.CHAR,Types.DATE,Types.CHAR,Types.VARCHAR,Types.VARCHAR};
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-	    jdbcTemplate.update("INSERT INTO customers (name,last_name,email,password,telephone,gender,date_of_birth,state,city,address) VALUES(?,?)",
-	    		new Object[] { customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPassword(), customer.getTelephone(), 
-	    		customer.getGender().toString(), customer.getDateOfBirth(), customer.getCity(), customer.getAddress() });
+	    jdbcTemplate.update(sql,values,types);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Customer> selectByEmail(String email)
 	{
+		String sql = "SELECT * FROM customers WHERE email = ?";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		return jdbcTemplate
-	    	.query("SELECT * FROM customers WHERE email = ?",
-	            new Object[] { email },
-	            new CustomerRowMapper());
+		return jdbcTemplate.query(sql,new Object[] { email },new CustomerRowMapper());
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Customer> selectAll()
+	{
+		String sql = "SELECT * FROM customers";
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate.query(sql,new Object[] {},new CustomerRowMapper());
 	}
 }
