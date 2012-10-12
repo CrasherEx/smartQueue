@@ -34,6 +34,7 @@ public class JDBCRestaurantDAO implements RestaurantDAO
 	    		restaurant.getCity(), restaurant.getAddress() });
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Restaurant> selectByName(String name)
 	{
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -43,6 +44,7 @@ public class JDBCRestaurantDAO implements RestaurantDAO
 	            new RestaurantRowMapper());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Restaurant> selectByFoodType(String foodType)
 	{
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);

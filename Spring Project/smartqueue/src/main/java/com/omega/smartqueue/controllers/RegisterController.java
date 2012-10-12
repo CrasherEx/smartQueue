@@ -31,7 +31,7 @@ public class RegisterController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register() {
-		return "register";
+		return "register/main";
 	}
 	
 	@RequestMapping(value = "/submitRegister", method = RequestMethod.POST)
@@ -177,7 +177,7 @@ public class RegisterController {
 		{
 			request.setAttribute("errorMessages",errorMessages);
 			for(String s:errorMessages) System.out.println(s);
-			return "register";
+			return "register/main";
 		}
 		else
 		{
@@ -192,7 +192,7 @@ public class RegisterController {
 													dateOfBirth,inputState,inputCity,
 													inputAddress);
 			customerDAO.create(customerToCreate);
-			return "registerSuccess";
+			return "register/success";
 		}
 
 	}
