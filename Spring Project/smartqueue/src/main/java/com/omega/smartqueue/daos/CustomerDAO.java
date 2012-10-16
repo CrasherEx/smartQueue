@@ -8,5 +8,6 @@ public interface CustomerDAO
 {
 	public void create(Customer customer);
 	public List<Customer> selectByEmail(String email);
+	public List<Customer> selectById(int id);
 	public List<Customer> selectAll();
 }

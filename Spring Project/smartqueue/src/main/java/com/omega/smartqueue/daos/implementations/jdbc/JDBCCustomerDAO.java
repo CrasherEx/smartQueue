@@ -46,6 +46,14 @@ public class JDBCCustomerDAO implements CustomerDAO
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate.query(sql,new Object[] { email },new CustomerRowMapper());
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Customer> selectById(int id)
+	{
+		String sql = "SELECT * FROM customers WHERE customer_id = ?";
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate.query(sql,new Object[] { id },new CustomerRowMapper());
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Customer> selectAll()

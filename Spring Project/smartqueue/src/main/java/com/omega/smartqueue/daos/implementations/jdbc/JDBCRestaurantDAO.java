@@ -28,30 +28,50 @@ public class JDBCRestaurantDAO implements RestaurantDAO
 	
 	public void create(Restaurant restaurant)
 	{
+		String sql = "INSERT INTO restaurants (name,email,password,telephone,state,city,address) VALUES(?,?,?,?,?,?,?)";
+		Object[] values = { restaurant.getName(),
+							restaurant.getEmail(),
+							restaurant.getPassword(),
+							restaurant.getTelephone(),
+							restaurant.getState(),
+							restaurant.getCity(),
+							restaurant.getAddress()
+							};
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-	    jdbcTemplate.update("INSERT INTO restaurants (name,email,password,telephone,state,city,address) VALUES(?,?)",
-	    		new Object[] { restaurant.getName(), restaurant.getEmail(), restaurant.getPassword(), restaurant.getTelephone(), 
-	    		restaurant.getCity(), restaurant.getAddress() });
+	    jdbcTemplate.update(sql,values);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Restaurant> selectByEmail(String email)
+	{
+		String sql = "SELECT * FROM restaurants WHERE email = ?";
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate.query(sql, new Object[] { email }, new RestaurantRowMapper());
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Restaurant> selectByName(String name)
 	{
+		String sql = "SELECT * FROM restaurants WHERE name = ?";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		return jdbcTemplate
-	    	.query("SELECT * FROM restaurants WHERE name = ?",
-	            new Object[] { name },
-	            new RestaurantRowMapper());
+		return jdbcTemplate.query(sql, new Object[] { name }, new RestaurantRowMapper());
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Restaurant> selectByFoodType(String foodType)
+	public List<Restaurant> selectByNameSearch(String nameSearch)
 	{
+		nameSearch = "%" + nameSearch + "%";
+		String sql = "SELECT * FROM restaurants WHERE name LIKE ?";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		return jdbcTemplate
-	    	.query("SELECT * FROM restaurants WHERE name = ?",
-	            new Object[] { foodType },
-	            new RestaurantRowMapper());
+		return jdbcTemplate.query(sql, new Object[] { nameSearch }, new RestaurantRowMapper());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Restaurant> selectAll()
+	{
+		String sql = "SELECT * FROM restaurants";
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate.query(sql, new Object[] { }, new RestaurantRowMapper());
 	}
 	
 }

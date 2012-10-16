@@ -54,13 +54,35 @@ public class Restaurant
 		return address;
 	}
 	
-	public Restaurant(int restaurant_id, String name, 
-			String email, String password, 
-			String telephone, String state, 
-			String city, String address)
+	public Restaurant(	int restaurant_id,
+						String name, 
+						String email,
+						String password, 
+						String telephone,
+						String state, 
+						String city,
+						String address)
 	{
 		super();
 		this.restaurant_id = restaurant_id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.telephone = telephone;
+		this.state = state;
+		this.city = city;
+		this.address = address;
+	}
+	
+	public Restaurant(	String name, 
+						String email,
+						String password, 
+						String telephone,
+						String state, 
+						String city,
+						String address )
+	{
+		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;

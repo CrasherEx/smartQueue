@@ -2,6 +2,18 @@
 	Arquivo criado para guardar os comandos de SQL para criar/consultar o banco de dados MySQL
 */
 
+CREATE TABLE restaurants
+(
+	restaurant_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(30) NOT NULL,
+	email VARCHAR(50) NOT NULL,
+	password VARCHAR(50) NOT NULL,
+	telephone VARCHAR(20) NOT NULL,
+	state CHAR(2) NOT NULL,
+	city VARCHAR(30) NOT NULL,
+	address VARCHAR(30) NOT NULL
+);
+
 CREATE TABLE customers
 (
 	customer_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

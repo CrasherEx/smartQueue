@@ -1,6 +1,5 @@
 package com.omega.smartqueue.controllers;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.omega.smartqueue.daos.CustomerDAO;
-import com.omega.smartqueue.enums.Gender;
-import com.omega.smartqueue.model.Customer;
+import com.omega.smartqueue.daos.RestaurantDAO;
+import com.omega.smartqueue.model.Restaurant;
 import com.omega.smartqueue.validators.AddressValidator;
 import com.omega.smartqueue.validators.CityValidator;
-import com.omega.smartqueue.validators.DateValidator;
 import com.omega.smartqueue.validators.EmailValidator;
-import com.omega.smartqueue.validators.GenderValidator;
-import com.omega.smartqueue.validators.LastNameValidator;
 import com.omega.smartqueue.validators.NameValidator;
 import com.omega.smartqueue.validators.PasswordValidator;
 import com.omega.smartqueue.validators.StateValidator;
@@ -27,24 +23,17 @@ import com.omega.smartqueue.validators.TelephonePrefixValidator;
 import com.omega.smartqueue.validators.TelephoneValidator;
 
 @Controller
-public class RegisterController {
+public class RestaurantRegisterController {
 	
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@RequestMapping(value = "/restaurantRegister", method = RequestMethod.GET)
 	public String register() {
-		return "register/main";
+		return "register/restaurant/main";
 	}
 	
-	@RequestMapping(value = "/submitRegister", method = RequestMethod.POST)
+	@RequestMapping(value = "/submitRestaurantRegister", method = RequestMethod.POST)
 	public String submitRegister(HttpServletRequest request) {
 	
 		String inputName = request.getParameter("inputName");
-		String inputLastName = request.getParameter("inputLastName");
-
-		String inputDayOfBirth = request.getParameter("inputDayOfBirth");
-		String inputMonthOfBirth = request.getParameter("inputMonthOfBirth");
-		String inputYearOfBirth = request.getParameter("inputYearOfBirth");
-		
-		String inputGender = request.getParameter("inputGender");
 		
 		String inputEmail = request.getParameter("inputEmail");
 		String confirmInputEmail = request.getParameter("confirmInputEmail");
@@ -67,30 +56,6 @@ public class RegisterController {
 		{
 			request.setAttribute("inputNameError",true);
 			errorMessages.addAll(nameValidatorErrors);
-		}
-		
-		LastNameValidator lastNameValidator = new LastNameValidator();
-		ArrayList<String> lastNameValidatorErrors = lastNameValidator.validate(inputLastName);
-		if(lastNameValidatorErrors.size() > 0)
-		{
-			request.setAttribute("inputLastNameError",true);
-			errorMessages.addAll(lastNameValidatorErrors);
-		}
-		
-		DateValidator dateValidator = new DateValidator();
-		ArrayList<String> dateValidatorErrors = dateValidator.validate(inputDayOfBirth, inputMonthOfBirth, inputYearOfBirth);
-		if(dateValidatorErrors.size() > 0)
-		{
-			request.setAttribute("inputDateError",true);
-			errorMessages.addAll(dateValidatorErrors);
-		}
-		
-		GenderValidator genderValidator = new GenderValidator();
-		ArrayList<String> genderValidatorErrors = genderValidator.validate(inputGender);
-		if(genderValidatorErrors.size() > 0)
-		{
-			request.setAttribute("inputGenderError",true);
-			errorMessages.addAll(genderValidatorErrors);
 		}
 		
 		EmailValidator emailValidator = new EmailValidator();
@@ -165,6 +130,14 @@ public class RegisterController {
 		}
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
+		
+		if(restaurantDAO.selectByEmail(inputEmail).size()>0)
+		{
+			request.setAttribute("inputEmailError",true);
+			errorMessages.add("Já existe um restaurante com esse e-mail registrado.");	
+		}
+		
 		CustomerDAO customerDAO = (CustomerDAO) context.getBean("CustomerDAO");
 		
 		if(customerDAO.selectByEmail(inputEmail).size()>0)
@@ -176,35 +149,33 @@ public class RegisterController {
 		if(errorMessages.size() > 0)
 		{
 			request.setAttribute("errorMessages",errorMessages);
-			for(String s:errorMessages) System.out.println(s);
-			return "register/main";
+			return "register/restaurant/main";
 		}
 		else
 		{
 			String telephone = inputTelephonePrefix+inputTelephone;
-			
-			String dateOfBirthString = Integer.parseInt(inputYearOfBirth) + "-" + Integer.parseInt(inputMonthOfBirth) + "-" + Integer.parseInt(inputDayOfBirth);
-			Date dateOfBirth = Date.valueOf(dateOfBirthString);
-			
-			Gender gender = Gender.toGender(inputGender);
-			Customer customerToCreate = new Customer(inputName,inputLastName,inputEmail,
-													inputPassword,telephone,gender,
-													dateOfBirth,inputState,inputCity,
-													inputAddress);
-			customerDAO.create(customerToCreate);
-			return "register/success";
+
+			Restaurant restaurantToCreate = new Restaurant(	inputName,
+															inputEmail,
+															inputPassword,
+															telephone,
+															inputState,
+															inputCity,
+															inputAddress);
+			restaurantDAO.create(restaurantToCreate);
+			return "register/restaurant/success";
 		}
 
 	}
 	
-	@RequestMapping(value = "/showUsers", method = RequestMethod.GET)
+	@RequestMapping(value = "/showRestaurants", method = RequestMethod.GET)
 	public String showUsers(HttpServletRequest request)
 	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-		CustomerDAO customerDAO = (CustomerDAO) context.getBean("CustomerDAO");
-		ArrayList<Customer> customers = (ArrayList<Customer>) customerDAO.selectAll();
-		request.setAttribute("customers",customers);
-		return "showUsers";
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
+		ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) restaurantDAO.selectAll();
+		request.setAttribute("restaurants",restaurants);
+		return "showRestaurants";
 	}
 	
 }

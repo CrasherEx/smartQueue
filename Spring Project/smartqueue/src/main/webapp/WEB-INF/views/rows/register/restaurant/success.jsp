@@ -7,15 +7,15 @@
 			</h2>
 		</legend>
 		<% 
-			String userName = request.getParameter("inputName");
-			if(userName != null)
+			String restaurantName = request.getParameter("inputName");
+			if(restaurantName != null)
 			{
 		%>
 			<div class="alert alert-success">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<strong>Sucesso!</strong>
 				<br/>
-				Parabéns <b><%=userName%></b>, seu registro foi realizado com sucesso!
+				Parabéns! O registro do restaurante <b><%=restaurantName%></b> foi realizado com sucesso!
 			</div>
 		<%
 			}
@@ -26,14 +26,14 @@
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<strong>Sucesso!</strong>
 				<br/>
-				Parabéns, seu registro foi realizado com sucesso!
+				Parabéns! O registro foi realizado com sucesso!
 			</div>
 		<%
 			}
 		%>
 		
 		<p>
-			O seu registro no site www.smartqueue.com.br foi realizado com sucesso!
+			O registro do restaurante no site www.smartqueue.com.br foi realizado com sucesso!
 			<br/>
 			Para acessar sua conta, basta acessar nossa página de <a href="login">login</a>.
 			<br/>

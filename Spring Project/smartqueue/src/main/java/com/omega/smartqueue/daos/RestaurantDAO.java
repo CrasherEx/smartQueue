@@ -12,6 +12,8 @@ import com.omega.smartqueue.model.Restaurant;
 public interface RestaurantDAO 
 {
 	public void create(Restaurant restaurant);
+	public List<Restaurant> selectByEmail(String email);
 	public List<Restaurant> selectByName(String name);
-	public List<Restaurant> selectByFoodType(String foodType);
+	public List<Restaurant> selectByNameSearch(String nameSearch);
+	public List<Restaurant> selectAll();
 }
