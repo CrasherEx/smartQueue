@@ -43,7 +43,10 @@
 					<br/>
 				</p>
 				
-				<button class="btn btn-primary">Entrar na Fila</button>
+				<form action="joinQueue" method="GET">
+					<input type="hidden" name="restaurant" value="<%=restaurant.getRestaurant_id()%>" /> 
+					<input type="submit" class="btn btn-primary" value="Entrar na Fila"/>
+				</form>
 			</div>
 	<%
 			} 

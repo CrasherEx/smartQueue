@@ -2,10 +2,6 @@ package com.omega.smartqueue.model;
 
 import java.util.List;
 
-/**
- * @author Luccas
- * 
- */
 public class Queue
 {
 

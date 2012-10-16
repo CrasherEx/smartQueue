@@ -2,6 +2,20 @@
 	Arquivo criado para guardar os comandos de SQL para criar/consultar o banco de dados MySQL
 */
 
+CREATE TABLE queues
+(
+	customer_in_queue_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	restaurant_id INT NOT NULL,
+	customer_name VARCHAR(30) NOT NULL,
+	party INT NOT NULL,
+	position INT NOT NULL,
+	telephone INT NOT NULL,
+	customer_id INT,
+	CONSTRAINT restaurants_restaurants_fk FOREIGN KEY (restaurant_id) REFERENCES restaurants (restaurant_id),
+	CONSTRAINT customers_customers_fk FOREIGN KEY (customer_id) REFERENCES customers (customer_id),
+	UNIQUE (customer_id)
+);
+
 CREATE TABLE restaurants
 (
 	restaurant_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -28,6 +42,10 @@ CREATE TABLE customers
 	city VARCHAR(30) NOT NULL,
 	address VARCHAR(30) NOT NULL
 );
+
+/*
+=============================================================
+*/
 
 /*
 CREATE TABLE users

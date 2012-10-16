@@ -10,10 +10,6 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 
 import com.omega.smartqueue.model.Restaurant;
 
-/**
- * @author Luccas
- *
- */
 public class RestaurantResultSetExtractor implements ResultSetExtractor
 {
 	public Object extractData(ResultSet resultSet) throws SQLException
