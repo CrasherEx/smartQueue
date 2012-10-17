@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.omega.smartqueue.daos.QueuesDAO;
-import com.omega.smartqueue.daos.implementations.jdbc.rowmappers.CustomerRowMapper;
+import com.omega.smartqueue.daos.implementations.jdbc.rowmappers.QueuesRowMapper;
 import com.omega.smartqueue.model.CustomerInQueue;
 
 public class JDBCQueuesDAO implements QueuesDAO
@@ -47,16 +47,16 @@ public class JDBCQueuesDAO implements QueuesDAO
 	@SuppressWarnings("unchecked")
 	public List<CustomerInQueue> selectCustomersInQueue(int restaurant_id)
 	{
-		String sql = "SELECT * FROM queues WHERE restaurant_id = ?";
+		String sql = "SELECT * FROM queues WHERE restaurant_id = ? ORDER BY position";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		return jdbcTemplate.query(sql,new Object[] { restaurant_id },new CustomerRowMapper());
+		return jdbcTemplate.query(sql,new Object[] { restaurant_id },new QueuesRowMapper());
 	}
 
 	private CustomerInQueue selectByCustomerInQueueId(int customer_in_queue_id)
 	{
 		String sql = "SELECT * FROM queues WHERE customer_in_queue_id = ?";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		return (CustomerInQueue) jdbcTemplate.queryForObject(sql,new Object[] { customer_in_queue_id },new CustomerRowMapper());
+		return (CustomerInQueue) jdbcTemplate.queryForObject(sql,new Object[] { customer_in_queue_id },new QueuesRowMapper());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -64,7 +64,7 @@ public class JDBCQueuesDAO implements QueuesDAO
 	{
 		String sql = "SELECT * FROM queues WHERE restaurant_id = ? AND position > ?";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		return jdbcTemplate.query(sql,new Object[] { restaurant_id, position },new CustomerRowMapper());
+		return jdbcTemplate.query(sql,new Object[] { restaurant_id, position },new QueuesRowMapper());
 	}
 	
 	private void updatePosition(int customer_id, int position)
@@ -96,6 +96,6 @@ public class JDBCQueuesDAO implements QueuesDAO
 	{
 		String sql = "SELECT * FROM queues WHERE customer_id = ?";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		return (CustomerInQueue) jdbcTemplate.queryForObject(sql,new Object[] { customer_id },new CustomerRowMapper());
+		return (CustomerInQueue) jdbcTemplate.queryForObject(sql,new Object[] { customer_id },new QueuesRowMapper());
 	}
 }

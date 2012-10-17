@@ -58,6 +58,14 @@ public class JDBCRestaurantDAO implements RestaurantDAO
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Restaurant> selectById(int restaurant_id)
+	{
+		String sql = "SELECT * FROM restaurants WHERE restaurant_id = ?";
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate.query(sql, new Object[] { restaurant_id }, new RestaurantRowMapper());
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Restaurant> selectByNameSearch(String nameSearch)
 	{
 		nameSearch = "%" + nameSearch + "%";

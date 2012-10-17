@@ -9,13 +9,29 @@
 	</head>
 	<body>
 		<jsp:include page="/WEB-INF/views/bars/top/main.jsp" />
-		<form action="joinqueue" method="post">
-			Nome: <input type="text" name="name" value=<%=request.getAttribute("customerName")%>/>
-			Telefone: <input type="text" name="telephone" value=<%=request.getAttribute("customerTel") %>/>
-			Número de pessoas: <input type="text" name="party">
-			<input type="submit" class="btn btn-primary" value="Confirmar"/>
-			<a class="btn" href="home">Cancelar</a>
-			
-		</form>
+		<div class="span6 offset3 well">
+			<form action="joinqueue" method="post">
+				<legend>
+					<h3>
+						Confirme seus Dados:
+					</h3>
+				</legend>
+				<h4>
+					Restaurante: <%=request.getAttribute("restaurantName")%>
+				</h4>
+				Pessoas na Fila: <%=request.getAttribute("queueSize")%>
+				<hr/>
+				<br/>
+     			<input type="hidden" name="restaurant" value="<%=request.getAttribute("restaurantId")%>" />
+				Nome: <input type="text" name="name" value="<%=request.getAttribute("customerName")%>" />
+				<br/>
+				Telefone: <input type="text" name="telephone" value="<%=request.getAttribute("customerTel")%>" />
+				<br/>
+				Número de pessoas: <input type="text" name="party" />
+				<br/>
+				<input type="submit" class="btn btn-primary" value="Confirmar"/>
+				<a class="btn" href="home">Cancelar</a>
+			</form>
+		</div>
 	</body>
 </html>

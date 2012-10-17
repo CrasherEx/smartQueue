@@ -7,11 +7,11 @@ public class CustomerInQueue
 	String customer_name;
 	int party;
 	int position;
-	int telephone;
+	String telephone;
 	int customer_id;
 	
 	public CustomerInQueue(int customer_in_queue_id, int restaurant_id,
-			String customer_name, int party, int position, int telephone,
+			String customer_name, int party, int position, String telephone,
 			int customer_id)
 	{
 		super();
@@ -25,14 +25,13 @@ public class CustomerInQueue
 	}
 
 	public CustomerInQueue(int restaurant_id,
-			String customer_name, int party, int telephone,
+			String customer_name, int party, String telephone,
 			int customer_id)
 	{
 		super();
 		this.restaurant_id = restaurant_id;
 		this.customer_name = customer_name;
 		this.party = party;
-		this.position = position;
 		this.telephone = telephone;
 		this.customer_id = customer_id;
 	}
@@ -87,12 +86,12 @@ public class CustomerInQueue
 		this.position = position;
 	}
 
-	public int getTelephone()
+	public String getTelephone()
 	{
 		return telephone;
 	}
 
-	public void setTelephone(int telephone)
+	public void setTelephone(String telephone)
 	{
 		this.telephone = telephone;
 	}

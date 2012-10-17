@@ -16,7 +16,7 @@ public class QueuesResultSetExtractor implements ResultSetExtractor
 															resultSet.getString("customer_name"),
 															resultSet.getInt("party"),
 															resultSet.getInt("position"),
-															resultSet.getInt("telephone"),
+															resultSet.getString("telephone"),
 															resultSet.getInt("customer_id"));
 	  return customerInQueue;
   }

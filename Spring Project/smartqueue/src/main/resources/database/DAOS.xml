@@ -9,5 +9,8 @@
 	<bean id="RestaurantDAO" class="com.omega.smartqueue.daos.implementations.jdbc.JDBCRestaurantDAO">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	<bean id="QueuesDAO" class="com.omega.smartqueue.daos.implementations.jdbc.JDBCQueuesDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
  
 </beans>
