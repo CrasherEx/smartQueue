@@ -10,5 +10,11 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Jean/Meus documentos/GitHub/smartQueue/Spring Project/smartqueue/src/main/resources/External API/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Jean/Meus documentos/GitHub/smartQueue/Spring Project/smartqueue/src/main/resources/External API/activation-1.1-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Jean/Meus documentos/GitHub/smartQueue/Spring Project/smartqueue/src/main/resources/External API/javamail-1.4.5/mail.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Jean/Meus documentos/GitHub/smartQueue/Spring Project/smartqueue/src/main/resources/External API/commons-email-1.2/commons-email-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Jean/Meus documentos/GitHub/smartQueue/Spring Project/smartqueue/src/main/resources/External API/commons-email-1.2/commons-email-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Jean/Meus documentos/GitHub/smartQueue/Spring Project/smartqueue/src/main/resources/External API/commons-email-1.2/commons-email-1.2-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

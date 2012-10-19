@@ -26,11 +26,11 @@
 					</a>
 				</div>
 				
-				<div class="btn-group pull-right">
+				<!--<div class="btn-group pull-right">
 					<a class="btn" href="#">
 						<i class="icon-question-sign"></i> Ajuda
 					</a>
-				</div>
+				</div>-->
 				
 				<div class="btn-group pull-right">
 					<a class="btn" href="register">

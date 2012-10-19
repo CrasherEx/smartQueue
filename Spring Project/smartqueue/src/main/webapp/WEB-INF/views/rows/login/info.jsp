@@ -9,7 +9,7 @@
 			<a class="btn btn-block" href="register">Registrar-se »</a>
 		</div>
 	</div>
-	<div class="row">
+	<!--<div class="row">
 		<div class="span4 well">
 			<legend>
 				<h4>
@@ -24,5 +24,5 @@
 				Não consigo acessar minha conta.
 			</a>
 		</div>
-	</div>
+	</div>-->
 </div>

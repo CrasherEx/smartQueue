@@ -15,6 +15,7 @@ import com.omega.smartqueue.daos.CustomerDAO;
 import com.omega.smartqueue.daos.RestaurantDAO;
 import com.omega.smartqueue.enums.Gender;
 import com.omega.smartqueue.model.Customer;
+import com.omega.smartqueue.model.EmailSender;
 import com.omega.smartqueue.validators.AddressValidator;
 import com.omega.smartqueue.validators.CityValidator;
 import com.omega.smartqueue.validators.DateValidator;
@@ -204,6 +205,8 @@ public class CustomerRegisterController {
 													dateOfBirth,inputState,inputCity,
 													inputAddress);
 			customerDAO.create(customerToCreate);
+			EmailSender emailSender = new EmailSender(customerToCreate);
+			emailSender.sendEmail();
 			return "register/customer/success";
 		}
 

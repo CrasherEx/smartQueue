@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.omega.smartqueue.daos.CustomerDAO;
 import com.omega.smartqueue.daos.RestaurantDAO;
+import com.omega.smartqueue.model.EmailSender;
 import com.omega.smartqueue.model.Restaurant;
 import com.omega.smartqueue.validators.AddressValidator;
 import com.omega.smartqueue.validators.CityValidator;
@@ -163,6 +164,8 @@ public class RestaurantRegisterController {
 															inputCity,
 															inputAddress);
 			restaurantDAO.create(restaurantToCreate);
+			EmailSender emailSender = new EmailSender(restaurantToCreate);
+			emailSender.sendEmail();
 			return "register/restaurant/success";
 		}
 
