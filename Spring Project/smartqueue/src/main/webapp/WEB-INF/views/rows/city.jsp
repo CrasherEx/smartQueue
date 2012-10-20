@@ -3,11 +3,11 @@
 		<div class="span8">
 			<h3>
 				Rio de Janeiro
-				<!--<small>
+				<small>
 					<a href="#">
 						Alterar Cidade
 					</a>
-				</small>-->
+				</small>
 			</h3>
 		</div>
 	</div>

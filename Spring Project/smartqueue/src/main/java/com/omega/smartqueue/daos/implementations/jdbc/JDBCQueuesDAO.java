@@ -32,16 +32,33 @@ public class JDBCQueuesDAO implements QueuesDAO
 	{
 		int position;
 		position = getLastPosition(customerInQueue.getRestaurant_id()) + 1;
-		String sql = "INSERT INTO queues (restaurant_id,customer_name,party,position,telephone,customer_id) VALUES(?,?,?,?,?,?)";
-		Object[] values = { customerInQueue.getRestaurant_id(), 
-							customerInQueue.getCustomer_name(),  
-							customerInQueue.getParty(),
-							position,
-							customerInQueue.getTelephone(),
-							customerInQueue.getCustomer_id()
-							};
+		String sql;
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-	    jdbcTemplate.update(sql,values);
+		
+		if(customerInQueue.getCustomer_id() == 0)
+		{
+			sql = "INSERT INTO queues (restaurant_id,customer_name,party,position,telephone,customer_id) VALUES(?,?,?,?,?,NULL)";
+
+			Object[] values = { customerInQueue.getRestaurant_id(), 
+								customerInQueue.getCustomer_name(),  
+								customerInQueue.getParty(),
+								position,
+								customerInQueue.getTelephone(),
+								};
+		    jdbcTemplate.update(sql,values);
+		}
+		else
+		{
+			sql = "INSERT INTO queues (restaurant_id,customer_name,party,position,telephone,customer_id) VALUES(?,?,?,?,?,?)";
+			Object[] values = { customerInQueue.getRestaurant_id(), 
+								customerInQueue.getCustomer_name(),  
+								customerInQueue.getParty(),
+								position,
+								customerInQueue.getTelephone(),
+								customerInQueue.getCustomer_id()
+								};
+		    jdbcTemplate.update(sql,values);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -67,12 +84,12 @@ public class JDBCQueuesDAO implements QueuesDAO
 		return jdbcTemplate.query(sql,new Object[] { restaurant_id, position },new QueuesRowMapper());
 	}
 	
-	private void updatePosition(int customer_id, int position)
+	private void updatePosition(int customer_in_queue_id, int position)
 	{
-		String sql = "UPDATE queues SET position = ? WHERE customer_id = ?";
+		String sql = "UPDATE queues SET position = ? WHERE customer_in_queue_id = ?";
 
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.update(sql,new Object[] { position, customer_id });
+		jdbcTemplate.update(sql,new Object[] { position, customer_in_queue_id });
 	}
 	
 	public void deleteCustomerInQueue(int customer_in_queue_id)
@@ -83,12 +100,12 @@ public class JDBCQueuesDAO implements QueuesDAO
 		
 		for(CustomerInQueue customerToChangePosition: customersToChangePosition)
 		{
-			updatePosition(customerToChangePosition.getCustomer_id(),customerToChangePosition.getPosition() - 1);
+			updatePosition(customerToChangePosition.getCustomer_in_queue_id(),customerToChangePosition.getPosition() - 1);
 		}
 		
-		String sql = "DELETE FROM queues WHERE customer_id = ?";
+		String sql = "DELETE FROM queues WHERE customer_in_queue_id = ?";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.update(sql,new Object[] { customerBeingDeleted.getCustomer_id() });
+		jdbcTemplate.update(sql,new Object[] { customerBeingDeleted.getCustomer_in_queue_id() });
 		
 	}
 

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.omega.smartqueue.daos.CustomerDAO;
 import com.omega.smartqueue.daos.RestaurantDAO;
-import com.omega.smartqueue.model.EmailSender;
 import com.omega.smartqueue.model.Restaurant;
 import com.omega.smartqueue.validators.AddressValidator;
 import com.omega.smartqueue.validators.CityValidator;
@@ -154,7 +153,7 @@ public class RestaurantRegisterController {
 		}
 		else
 		{
-			String telephone = inputTelephonePrefix+inputTelephone;
+			String telephone = "("+inputTelephonePrefix+")"+inputTelephone;
 
 			Restaurant restaurantToCreate = new Restaurant(	inputName,
 															inputEmail,
@@ -164,21 +163,8 @@ public class RestaurantRegisterController {
 															inputCity,
 															inputAddress);
 			restaurantDAO.create(restaurantToCreate);
-			EmailSender emailSender = new EmailSender(restaurantToCreate);
-			emailSender.sendEmail();
 			return "register/restaurant/success";
 		}
 
 	}
-	
-	@RequestMapping(value = "/showRestaurants", method = RequestMethod.GET)
-	public String showUsers(HttpServletRequest request)
-	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
-		ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) restaurantDAO.selectAll();
-		request.setAttribute("restaurants",restaurants);
-		return "showRestaurants";
-	}
-	
 }

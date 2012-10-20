@@ -12,15 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.omega.smartqueue.daos.CustomerDAO;
+import com.omega.smartqueue.daos.RestaurantDAO;
 import com.omega.smartqueue.enums.UserType;
 import com.omega.smartqueue.model.Customer;
+import com.omega.smartqueue.model.Restaurant;
 
 @Controller
 public class LoginController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
-		return "login/customer/main";
+		return "login/main";
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -64,18 +66,28 @@ public class LoginController {
 		if(errorMessages.size()>0)
 		{
 			request.setAttribute("errorMessages",errorMessages);
-			return "login/customer/main";
+			return "login/main";
 		}
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 	 
 		CustomerDAO customerDAO = (CustomerDAO) context.getBean("CustomerDAO");
+		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
+		
+
+		ArrayList<Restaurant> restaurantList = (ArrayList<Restaurant>) restaurantDAO.selectByEmail(inputEmail);
 		ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectByEmail(inputEmail);
 		
-		if(customerList.size() == 0)
+		if(customerList.size() == 0 && restaurantList.size() == 0)
 		{
 			request.setAttribute("inputEmailError",true);
 			errorMessages.add("<b>Usuário</b> inexistente.");
+		}
+		else if(customerList.size() == 1 && restaurantList.size() == 1)
+		{
+			request.setAttribute("inputEmailError",true);
+			request.setAttribute("inputPasswordError",true);
+			errorMessages.add("Um erro interno ocorreu. Contate o SAC imediatamente. <b>Erro:</b> Cliente e restaurantes com e-mail igual.");
 		}
 		else if(customerList.size() == 1)
 		{
@@ -100,6 +112,29 @@ public class LoginController {
 				return "home";
 			}
 		}
+		else if(restaurantList.size() == 1)
+		{
+			Restaurant restaurant = restaurantList.get(0);
+			if(inputPassword.equals(restaurant.getPassword()) == false)
+			{
+				request.setAttribute("inputPasswordError",true);
+				errorMessages.add("<b>Senha</b> incorreta.");
+			}
+			else
+			{
+				HttpSession session = request.getSession();
+				if(inputRememberMe != null)
+				{
+					if(inputRememberMe.equals("true"))
+					{
+						session.setMaxInactiveInterval(365*24*60*60);
+					}
+				}
+				session.setAttribute("userId",restaurant.getRestaurant_id());
+				session.setAttribute("userType",UserType.RESTAURANT);
+				return "home";
+			}
+		}
 		else
 		{
 			request.setAttribute("inputEmailError",true);
@@ -108,7 +143,7 @@ public class LoginController {
 		}
 
 		request.setAttribute("errorMessages",errorMessages);
-		return "login/customer/main";
+		return "login/main";
 	}
 	
 }

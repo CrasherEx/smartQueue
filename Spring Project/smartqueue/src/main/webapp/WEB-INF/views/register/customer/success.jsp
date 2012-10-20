@@ -11,6 +11,7 @@
 		<div class="container">
 			<jsp:include page="/WEB-INF/views/rows/register/customer/success.jsp" />
 		</div>
+		<jsp:include page="/WEB-INF/views/bars/bottom/main.jsp" />
 		<jsp:include page="/WEB-INF/views/includes/js.jsp" />
 	</body>
 </html>

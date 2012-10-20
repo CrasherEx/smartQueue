@@ -6,10 +6,17 @@
 					Novo Usuário?
 				</h4>
 			</legend>
-			<a class="btn btn-block" href="register">Registrar-se »</a>
+			<a href="register">
+				Registrar-se.
+			</a>
+			<br/>
+			<a href="restaurantRegister">
+				Registrar-se como Restaurante.
+			</a>
 		</div>
 	</div>
-	<!--<div class="row">
+	<!--
+	<div class="row">
 		<div class="span4 well">
 			<legend>
 				<h4>
@@ -24,5 +31,6 @@
 				Não consigo acessar minha conta.
 			</a>
 		</div>
-	</div>-->
+	</div>
+	  -->
 </div>

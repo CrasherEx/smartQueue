@@ -15,7 +15,6 @@ import com.omega.smartqueue.daos.CustomerDAO;
 import com.omega.smartqueue.daos.RestaurantDAO;
 import com.omega.smartqueue.enums.Gender;
 import com.omega.smartqueue.model.Customer;
-import com.omega.smartqueue.model.EmailSender;
 import com.omega.smartqueue.validators.AddressValidator;
 import com.omega.smartqueue.validators.CityValidator;
 import com.omega.smartqueue.validators.DateValidator;
@@ -190,7 +189,7 @@ public class CustomerRegisterController {
 		}
 		else
 		{
-			String telephone = inputTelephonePrefix+inputTelephone;
+			String telephone = "("+inputTelephonePrefix+")"+inputTelephone;
 			
 			if(inputMonthOfBirth.length()==1) inputMonthOfBirth = "0" + inputMonthOfBirth;
 			if(inputDayOfBirth.length()==1) inputDayOfBirth = "0" + inputDayOfBirth;
@@ -205,21 +204,8 @@ public class CustomerRegisterController {
 													dateOfBirth,inputState,inputCity,
 													inputAddress);
 			customerDAO.create(customerToCreate);
-			EmailSender emailSender = new EmailSender(customerToCreate);
-			emailSender.sendEmail();
 			return "register/customer/success";
 		}
 
-	}
-	
-	@RequestMapping(value = "/showUsers", method = RequestMethod.GET)
-	public String showUsers(HttpServletRequest request)
-	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-		CustomerDAO customerDAO = (CustomerDAO) context.getBean("CustomerDAO");
-		ArrayList<Customer> customers = (ArrayList<Customer>) customerDAO.selectAll();
-		request.setAttribute("customers",customers);
-		return "showUsers";
-	}
-	
+	}	
 }

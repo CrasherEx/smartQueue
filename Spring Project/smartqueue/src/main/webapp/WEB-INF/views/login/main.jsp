@@ -4,12 +4,13 @@
 	<head>
 		<jsp:include page="/WEB-INF/views/includes/css.jsp" />
 		<jsp:include page="/WEB-INF/views/includes/icon.jsp" />
-		<title>Registro de Restaurante</title>
+		<title>Login</title>
 	</head>
 	<body>
 		<jsp:include page="/WEB-INF/views/bars/top/main.jsp" />
 		<div class="container">
-			<jsp:include page="/WEB-INF/views/rows/register/restaurant/form.jsp" />
+			<jsp:include page="/WEB-INF/views/rows/queue.jsp" />
+			<jsp:include page="/WEB-INF/views/rows/login.jsp" />
 		</div>
 		<jsp:include page="/WEB-INF/views/bars/bottom/main.jsp" />
 		<jsp:include page="/WEB-INF/views/includes/js.jsp" />

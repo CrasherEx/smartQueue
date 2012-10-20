@@ -2,6 +2,9 @@
 	Arquivo criado para guardar os comandos de SQL para criar/consultar o banco de dados MySQL
 */
 
+CREATE USER 'iansilva_app'@'localhost' IDENTIFIED BY 'smartqueuedb-password';
+GRANT ALL ON iansilva_smartqueuedb.* TO 'iansilva_app'@'localhost';
+
 CREATE TABLE queues
 (
 	customer_in_queue_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -9,7 +12,7 @@ CREATE TABLE queues
 	customer_name VARCHAR(30) NOT NULL,
 	party INT NOT NULL,
 	position INT NOT NULL,
-	telephone INT NOT NULL,
+	telephone VARCHAR(20) NOT NULL,
 	customer_id INT,
 	CONSTRAINT restaurants_restaurants_fk FOREIGN KEY (restaurant_id) REFERENCES restaurants (restaurant_id),
 	CONSTRAINT customers_customers_fk FOREIGN KEY (customer_id) REFERENCES customers (customer_id),

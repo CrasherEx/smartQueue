@@ -18,13 +18,13 @@ public class TelephoneValidator implements SimpleValidator
 		{
 			errors.add("A parte principal do campo <b>Telefone</b> necessita ser preenchido.");
 		}
-		else if(stringToValidate.length() < 7 || stringToValidate.length() > 10)
+		else if(stringToValidate.length() < 6 || stringToValidate.length() > 14)
 		{
-			errors.add("A parte principal do campo <b>Telefone</b> necessita ter entre <b>7</b> e <b>10</b> algarismos.");
+			errors.add("A parte principal do campo <b>Telefone</b> necessita ter entre <b>6</b> e <b>14</b> algarismos.");
 		}
 		else
 		{
-			Pattern pattern = Pattern.compile("^[0-9]{7,10}$");
+			Pattern pattern = Pattern.compile("^[0-9]{6,14}$");
 			Matcher matcher = pattern.matcher(stringToValidate);
 			if(matcher.find() == false) 
 			{

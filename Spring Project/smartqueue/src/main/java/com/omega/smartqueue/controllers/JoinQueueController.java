@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,46 +34,84 @@ public class JoinQueueController
 		
 		if(userId == null && userType == null)
 		{
-			errorMessages.add("Você precisa estar logado para entrar em uma fila. " +
-					"Caso deseje fazer login, <a href='login'>clique aqui</a>");
+			errorMessages.add("Você precisa estar logado para entrar em uma fila. Acesse nossa <a href='login'>página de login</a> para logar-se.");
 			request.setAttribute("errorMessages",errorMessages);
 			return "error";
 		}
 		else if(userId == null || userType == null)
 		{
-			//Erro fatal do sistema. Não tem que acontecer de jeito nenhum.
-			errorMessages.add("Something wrong just happened.");
+			errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Chave <u>id/tipo</u> de login parcialmente nula</b>");
 			request.setAttribute("errorMessages",errorMessages);
 			return "error";	
 		}
 		
-		if(userType == UserType.RESTAURANT)
+		if(userType != UserType.CUSTOMER)
 		{
-			errorMessages.add("Restaurantes não podem entrar em fila. Efetue login como <b>cliente</b>.");
+			errorMessages.add("É necessário ser um <b>cliente</b> para entrar na fila de um restaurante.");
 			request.setAttribute("errorMessages",errorMessages);
 			return "error";
 		}
 		
 		// A partir daqui já é possivel considerar que é um cliente
+		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		CustomerDAO customerDAO= (CustomerDAO) context.getBean("CustomerDAO");
 		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
-		QueuesDAO queuesDAO = (QueuesDAO) context.getBean("QueuesDAO");
 
-		Integer restaurandId = Integer.parseInt(request.getParameter("restaurant"));
+		String inputRestaurantId = request.getParameter("restaurant");
+		if(inputRestaurantId == null)
+		{
+			errorMessages.add("Restaurante nulo.");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";
+		}
+		
+		try
+		{
+			Integer restaurantId = Integer.parseInt(inputRestaurantId);
+			ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) restaurantDAO.selectById(restaurantId);
+			
+			if(restaurants.size() == 0)
+			{
+				errorMessages.add("Restaurante inexistente.");
+				request.setAttribute("errorMessages",errorMessages);
+				return "error";
+			}
+			else if(restaurants.size() > 1)
+			{
+				errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Entrada múltipla de restaurantes</b>");
+				request.setAttribute("errorMessages",errorMessages);
+				return "error";
+			}
+			
+			Restaurant restaurant = restaurants.get(0);
+			request.setAttribute("restaurant",restaurant);
+		}
+		catch(NumberFormatException numberFormatException)
+		{
+			errorMessages.add("Restaurante inválido.");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";
+		}
 		
 		ArrayList<Customer> customers = (ArrayList<Customer>) customerDAO.selectById(userId);
-		ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) restaurantDAO.selectById(restaurandId);
+		
+		if(customers.size() == 0)
+		{
+			errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Usuário logado com conta inexistente</b>");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";
+		}
+		else if(customers.size() > 1)
+		{
+			errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Entrada múltipla de usuários</b>");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";
+		}
+		
+		Customer customer = customers.get(0);
 
-		Restaurant restaurant = restaurants.get(0);
-		String customerName = customers.get(0).getName();
-		String customerTel = customers.get(0).getTelephone();
-
-		request.setAttribute("restaurantId",restaurandId);
-		request.setAttribute("restaurantName",restaurant.getName());
-		request.setAttribute("queueSize",queuesDAO.selectCustomersInQueue(restaurandId).size());
-		request.setAttribute("customerName",customerName);
-		request.setAttribute("customerTel", customerTel);
+		request.setAttribute("customer",customer);
 		return "confirmjoinqueue";
 	}
 	
@@ -80,54 +119,103 @@ public class JoinQueueController
 	public String joinQueue(HttpServletRequest request)
 	{	
 		HttpSession session = request.getSession();
+		ArrayList<String> errorMessages = new ArrayList<String>();
 		
-		Integer customerId = (Integer) session.getAttribute("userId");
-		Integer restaurandId = Integer.parseInt(request.getParameter("restaurant"));
-		String name = (String) request.getParameter("name");
-		String telephone = (String) request.getParameter("telephone");
-		Integer party = Integer.parseInt(request.getParameter("party"));
+		Integer userId = (Integer) session.getAttribute("userId");
+		UserType userType = (UserType) session.getAttribute("userType");
 		
-		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-		QueuesDAO queuesDAO = (QueuesDAO) context.getBean("QueuesDAO");
+		if(userId == null && userType == null)
+		{
+			errorMessages.add("Você precisa estar logado para entrar em uma fila. Acesse nossa <a href='login'>página de login</a> para logar-se.");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";
+		}
+		else if(userId == null || userType == null)
+		{
+			errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Chave <u>id/tipo</u> de login parcialmente nula</b>");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";	
+		}
 		
-		CustomerInQueue customerToAdd = new CustomerInQueue(restaurandId,name,party,telephone,customerId);
+		if(userType != UserType.CUSTOMER)
+		{
+			errorMessages.add("É necessário ser um <b>cliente</b> para entrar na fila de um restaurante.");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";
+		}
 		
-		queuesDAO.create(customerToAdd);
-		
-		return "home";
-	}
-	
-	@RequestMapping(value = "/showQueues", method = RequestMethod.GET)
-	public String showQueues(HttpServletRequest request)
-	{
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
 		QueuesDAO queuesDAO = (QueuesDAO) context.getBean("QueuesDAO");
 		
-		ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) restaurantDAO.selectAll();
+		String inputRestaurantId = request.getParameter("restaurant");
 		
-		ArrayList<ArrayList<CustomerInQueue>> queues = new ArrayList<ArrayList<CustomerInQueue>>();
-		ArrayList<String> names = new ArrayList<String>();
-		for(Restaurant restaurant:restaurants)
+		if(inputRestaurantId == null)
 		{
-			queues.add( (ArrayList<CustomerInQueue>) queuesDAO.selectCustomersInQueue(restaurant.getRestaurant_id()));
-			names.add(restaurant.getName());
+			errorMessages.add("Restaurante nulo.");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";
 		}
-
-		request.setAttribute("restaurantNames",names);
-		request.setAttribute("queues",queues);
-		return "showQueues";
+		try
+		{
+			Integer restaurantId = Integer.parseInt(inputRestaurantId);
+			ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) restaurantDAO.selectById(restaurantId);
+			
+			if(restaurants.size() == 0)
+			{
+				errorMessages.add("Restaurante inexistente.");
+				request.setAttribute("errorMessages",errorMessages);
+				return "error";
+			}
+			else if(restaurants.size() > 1)
+			{
+				errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Entrada múltipla de restaurantes</b>");
+				request.setAttribute("errorMessages",errorMessages);
+				return "error";
+			}
+			
+			String name = (String) request.getParameter("name");
+			String telephone = (String) request.getParameter("telephone");
+			
+			String inputParty = request.getParameter("party");
+			if(inputParty == null)
+			{
+				errorMessages.add("Por favor, preencha o número de pessoas que entrarão na fila");
+				request.setAttribute("errorMessages",errorMessages);
+				return "error";
+			}
+			
+			try
+			{
+				Integer party = Integer.parseInt(inputParty);
+				CustomerInQueue customerToAdd = new CustomerInQueue(restaurantId,name,party,telephone,userId);
+				
+				try
+				{
+					queuesDAO.create(customerToAdd);
+				}
+				catch(DataIntegrityViolationException dataIntegrityViolationException)
+				{
+					errorMessages.add("Você já está dentro de uma fila.");
+					request.setAttribute("errorMessages",errorMessages);
+					return "error";
+				}
+			}
+			catch(NumberFormatException numberFormatException)
+			{
+				errorMessages.add("Número de pessoas inválido.");
+				request.setAttribute("errorMessages",errorMessages);
+				return "error";
+			}
+		}
+		catch(NumberFormatException numberFormatException)
+		{
+			errorMessages.add("Restaurante inválido.");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";
+		}
+		
+		return "home";
 	}
 	
-	@RequestMapping(value = "/removeCustomerFromQueue", method = RequestMethod.POST)
-	public String removeCustomerFromQueue(HttpServletRequest request)
-	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-		Integer id = Integer.parseInt(request.getParameter("id"));
-		QueuesDAO queuesDAO = (QueuesDAO) context.getBean("QueuesDAO");
-		
-		queuesDAO.deleteCustomerInQueue(id);
-		
-		return showQueues(request);
-	}
 }

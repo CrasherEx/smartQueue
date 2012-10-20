@@ -15,7 +15,7 @@
 	<head>
 		<jsp:include page="/WEB-INF/views/includes/css.jsp" />
 		<jsp:include page="/WEB-INF/views/includes/icon.jsp" />
-		<title>Confirmar Fila</title>
+		<title>Confirm Join Queue</title>
 	</head>
 	<body>
 		<jsp:include page="/WEB-INF/views/bars/top/main.jsp" />
@@ -24,7 +24,6 @@
 			
 			<%
 				Restaurant restaurant = (Restaurant) request.getAttribute("restaurant");
-				Customer customer = (Customer) request.getAttribute("customer");
 				
 				ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 				QueuesDAO queuesDAO = (QueuesDAO) context.getBean("QueuesDAO");
@@ -34,7 +33,7 @@
 				<div class="span10 offset1 well">
 					<legend>
 						<h3>
-							Entrar na Fila:
+							Geral:
 						</h3>
 					</legend>
 					<h4>
@@ -69,7 +68,7 @@
 							</tr>
 						</tbody>
 					</table>
-				</div>
+				</div>	
 			</div>
 			<div class="row">
 				<div class="span10 offset1 well">
@@ -148,53 +147,6 @@
 					<%
 						}
 					%>
-				</div>
-			</div>
-			<div class="row">
-				<div class="span10 offset1 well">
-					<form action="joinqueue" method="post" class="form-horizontal">
-						<legend>
-							<h3>
-								Confirme seus Dados:
-							</h3>
-						</legend>
-			     			
-			     		<input type="hidden" name="restaurant" value="<%=restaurant.getRestaurant_id()%>" />
-		     			
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">
-								Nome:
-							</label>
-							<div class="controls">
-								<input type="text" name="name" value="<%=customer.getName()%>" />
-							</div>
-						</div>
-						
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">
-								Telefone:
-							</label>
-							<div class="controls">
-								<input type="text" name="telephone" value="<%=customer.getTelephone()%>" />
-							</div>
-						</div>
-						
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">
-								Número de Pessoas:
-							</label>
-							<div class="controls">
-								<input type="number" class="span1" min="1" name="party" />
-							</div>
-						</div>
-						
-						<div class="control-group">
-							<div class="controls">
-								<input type="submit" class="btn btn-primary" value="Confirmar"/>
-								<a class="btn" href="home">Cancelar</a>
-							</div>
-						</div>
-					</form>
 				</div>
 			</div>
 		</div>

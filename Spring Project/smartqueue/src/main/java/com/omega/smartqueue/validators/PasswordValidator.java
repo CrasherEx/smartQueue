@@ -18,13 +18,13 @@ public class PasswordValidator implements SimpleValidator
 		{
 			errors.add("O campo <b>Senha</b> necessita ser preenchido.");
 		}
-		else if(stringToValidate.length()<8 || stringToValidate.length()>15)
+		else if(stringToValidate.length()<6 || stringToValidate.length()>16)
 		{
-			errors.add("O campo <b>Senha</b> necessita ter entre <b>8</b> e <b>15</b> caracteres.");
+			errors.add("O campo <b>Senha</b> necessita ter entre <b>6</b> e <b>16</b> caracteres.");
 		}
 		else
 		{
-			Pattern pattern = Pattern.compile("^[a-zA-Z0-9_#$%&]{8,15}$");
+			Pattern pattern = Pattern.compile("^[a-zA-Z0-9_#$%&]{6,16}$");
 			Matcher matcher = pattern.matcher(stringToValidate);
 			if(matcher.find() == false) 
 			{

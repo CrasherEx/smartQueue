@@ -12,11 +12,20 @@
 	position: relative;
 }
 
+
+.group
+{
+	height: 70px;
+	width: 70px;
+	position: relative;
+}
+
 body 
 {
 	background-color: #EBEBFB;
 	/*background: url(../images/background/background.png);*/
 	background-repeat: repeat;
+	min-width: 860px;
 }
 
 .well
