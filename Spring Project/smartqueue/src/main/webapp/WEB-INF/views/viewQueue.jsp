@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="com.omega.smartqueue.model.Restaurant" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.omega.smartqueue.model.Customer" %>
+<%@ page import="com.omega.smartqueue.model.Restaurant" %>
 <%@ page import="com.omega.smartqueue.model.CustomerInQueue" %>
 <%@ page import="com.omega.smartqueue.enums.UserType" %>
 <%@ page import="com.omega.smartqueue.daos.CustomerDAO" %>
