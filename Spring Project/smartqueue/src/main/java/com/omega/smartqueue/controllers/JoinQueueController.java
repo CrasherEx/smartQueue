@@ -1,5 +1,6 @@
 package com.omega.smartqueue.controllers;
 
+import com.omega.smartqueue.validators.*;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,72 +21,77 @@ import com.omega.smartqueue.model.Customer;
 import com.omega.smartqueue.model.CustomerInQueue;
 import com.omega.smartqueue.model.Restaurant;
 
+/**
+	 * Controller that coordinates how the customer join the queue and validates its entrance.
+	 * Only customers are able to join queue.
+	 * 
+	 * @author Aluno5
+	 * @version 2.0, November 2012	 
+	 * @see validators Package with the Validators Classes.
+*/
+
 @Controller
 public class JoinQueueController
 {
 	@RequestMapping(value = "confirmjoinqueue", method = RequestMethod.GET)
+	
+	/**
+	 * @return page that will show any errors.
+	 * @return the confirmation page to join queue.
+	 * @return if the customer successfully joins queue, goes back to home page.
+	 * @param request The request sent by the client
+	 * @return the page that contains
+	 */
 	public String confirmJoinQueue(HttpServletRequest request)
 	{
+		//
 		HttpSession session = request.getSession();
+		//ArrayLists to save the errors and show it later.
 		ArrayList<String> errorMessages = new ArrayList<String>();
+		ArrayList<String> typeValidatorErrors = new ArrayList<String>();
+		ArrayList<String> restaurantValidatorErrors = new ArrayList<String>();
+		ArrayList<String> customerValidatorErrors = new ArrayList<String>();
 		
 		Integer userId = (Integer) session.getAttribute("userId");
 		UserType userType = (UserType) session.getAttribute("userType");
 		
-		if(userId == null && userType == null)
-		{
-			errorMessages.add("Você precisa estar logado para entrar em uma fila. Acesse nossa <a href='login'>página de login</a> para logar-se.");
-			request.setAttribute("errorMessages",errorMessages);
-			return "error";
-		}
-		else if(userId == null || userType == null)
-		{
-			errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Chave <u>id/tipo</u> de login parcialmente nula</b>");
-			request.setAttribute("errorMessages",errorMessages);
-			return "error";	
-		}
+		TypeValidator typeValidator = new TypeValidator();
 		
-		if(userType != UserType.CUSTOMER)
+		typeValidatorErrors = typeValidator.validate(userId,userType,UserType.CUSTOMER);
+		errorMessages.addAll(typeValidatorErrors);
+		
+		// Return error if the user is not a customer.
+		if (!typeValidatorErrors.isEmpty())
 		{
-			errorMessages.add("É necessário ser um <b>cliente</b> para entrar na fila de um restaurante.");
 			request.setAttribute("errorMessages",errorMessages);
 			return "error";
 		}
 		
-		// A partir daqui já é possivel considerar que é um cliente
+		
+		// From here on, the user can only be a customer.
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 		CustomerDAO customerDAO= (CustomerDAO) context.getBean("CustomerDAO");
 		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
 
 		String inputRestaurantId = request.getParameter("restaurant");
-		if(inputRestaurantId == null)
-		{
-			errorMessages.add("Restaurante nulo.");
-			request.setAttribute("errorMessages",errorMessages);
-			return "error";
-		}
+		RestaurantValidator restaurantValidator = new RestaurantValidator();
+		
 		
 		try
 		{
 			Integer restaurantId = Integer.parseInt(inputRestaurantId);
 			ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) restaurantDAO.selectById(restaurantId);
-			
-			if(restaurants.size() == 0)
-			{
-				errorMessages.add("Restaurante inexistente.");
-				request.setAttribute("errorMessages",errorMessages);
-				return "error";
-			}
-			else if(restaurants.size() > 1)
-			{
-				errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Entrada múltipla de restaurantes</b>");
-				request.setAttribute("errorMessages",errorMessages);
-				return "error";
-			}
+			restaurantValidatorErrors = restaurantValidator.validate(restaurantId, restaurants);
+			errorMessages.addAll(restaurantValidatorErrors);
 			
 			Restaurant restaurant = restaurants.get(0);
 			request.setAttribute("restaurant",restaurant);
+			if (!restaurantValidatorErrors.isEmpty())
+			{
+				request.setAttribute("errorMessages",errorMessages);
+				return "error";
+			}
 		}
 		catch(NumberFormatException numberFormatException)
 		{
@@ -95,51 +101,50 @@ public class JoinQueueController
 		}
 		
 		ArrayList<Customer> customers = (ArrayList<Customer>) customerDAO.selectById(userId);
+		CustomerValidator customerValidator = new CustomerValidator();
 		
-		if(customers.size() == 0)
+		customerValidatorErrors = customerValidator.validate(customers);
+		errorMessages.addAll(customerValidatorErrors);
+		
+		if(!customerValidatorErrors.isEmpty())
 		{
-			errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Usuário logado com conta inexistente</b>");
-			request.setAttribute("errorMessages",errorMessages);
-			return "error";
-		}
-		else if(customers.size() > 1)
-		{
-			errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Entrada múltipla de usuários</b>");
 			request.setAttribute("errorMessages",errorMessages);
 			return "error";
 		}
 		
 		Customer customer = customers.get(0);
-
+		
+		// Arriving here, no errors were found. 
 		request.setAttribute("customer",customer);
 		return "confirmjoinqueue";
 	}
 	
 	@RequestMapping(value = "joinqueue", method = RequestMethod.POST)
+	
+	/**
+	 * @return page that will show any errors.
+	 * @return if the customer successfully joins queue, goes back to home page.
+	 * @param request The request sent by the client
+	 * @return the page that contains
+	 */
+	
 	public String joinQueue(HttpServletRequest request)
 	{	
 		HttpSession session = request.getSession();
 		ArrayList<String> errorMessages = new ArrayList<String>();
+		ArrayList<String> typeValidatorErrors = new ArrayList<String>();
+		ArrayList<String> restaurantValidatorErrors = new ArrayList<String>();
 		
 		Integer userId = (Integer) session.getAttribute("userId");
 		UserType userType = (UserType) session.getAttribute("userType");
+
+		TypeValidator typeValidator = new TypeValidator();
 		
-		if(userId == null && userType == null)
-		{
-			errorMessages.add("Você precisa estar logado para entrar em uma fila. Acesse nossa <a href='login'>página de login</a> para logar-se.");
-			request.setAttribute("errorMessages",errorMessages);
-			return "error";
-		}
-		else if(userId == null || userType == null)
-		{
-			errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Chave <u>id/tipo</u> de login parcialmente nula</b>");
-			request.setAttribute("errorMessages",errorMessages);
-			return "error";	
-		}
+		typeValidatorErrors = typeValidator.validate(userId,userType,UserType.CUSTOMER);
+		errorMessages.addAll(typeValidatorErrors);
 		
-		if(userType != UserType.CUSTOMER)
+		if (!typeValidatorErrors.isEmpty())
 		{
-			errorMessages.add("É necessário ser um <b>cliente</b> para entrar na fila de um restaurante.");
 			request.setAttribute("errorMessages",errorMessages);
 			return "error";
 		}
@@ -149,27 +154,19 @@ public class JoinQueueController
 		QueuesDAO queuesDAO = (QueuesDAO) context.getBean("QueuesDAO");
 		
 		String inputRestaurantId = request.getParameter("restaurant");
+		RestaurantValidator restaurantValidator = new RestaurantValidator();
 		
-		if(inputRestaurantId == null)
-		{
-			errorMessages.add("Restaurante nulo.");
-			request.setAttribute("errorMessages",errorMessages);
-			return "error";
-		}
 		try
 		{
 			Integer restaurantId = Integer.parseInt(inputRestaurantId);
 			ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) restaurantDAO.selectById(restaurantId);
+			restaurantValidatorErrors = restaurantValidator.validate(restaurantId, restaurants);
+			errorMessages.addAll(restaurantValidatorErrors);
 			
-			if(restaurants.size() == 0)
+			Restaurant restaurant = restaurants.get(0);
+			request.setAttribute("restaurant",restaurant);
+			if (!restaurantValidatorErrors.isEmpty())
 			{
-				errorMessages.add("Restaurante inexistente.");
-				request.setAttribute("errorMessages",errorMessages);
-				return "error";
-			}
-			else if(restaurants.size() > 1)
-			{
-				errorMessages.add("Um erro fatal ocorreu. Contate o SAC imediatamente. <b>Erro: Entrada múltipla de restaurantes</b>");
 				request.setAttribute("errorMessages",errorMessages);
 				return "error";
 			}
@@ -188,6 +185,7 @@ public class JoinQueueController
 			try
 			{
 				Integer party = Integer.parseInt(inputParty);
+		
 				CustomerInQueue customerToAdd = new CustomerInQueue(restaurantId,name,party,telephone,userId);
 				
 				try
@@ -215,6 +213,7 @@ public class JoinQueueController
 			return "error";
 		}
 		
+		// Arriving here, no errors were found.
 		return "home";
 	}
 	
