@@ -1,5 +1,6 @@
  <%@ page import="java.util.ArrayList" %>
  <%@ page import="com.omega.smartqueue.model.CustomerInQueue" %>
+
 <div class="span6 well">
 	<legend>
 		<h2>
@@ -20,6 +21,7 @@
 				<th>Telefone</th>
 				<th>Número de Pessoas</th>
 				<th>Ações</th>
+				<th>Notificações</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -44,10 +46,31 @@
 							<%=customerInQueue.getParty()%>
 						</td>
 						<td>
+							<form action="callCustomerFromQueue" method="post">
+								<input type="hidden" name="id" value="<%=customerInQueue.getCustomer_in_queue_id()%>" />
+								<input type="submit" class="btn btn-primary btn-small" value="Chamar Cliente"/>
+							</form>
 							<form action="removeCustomerFromQueue" method="post">
 								<input type="hidden" name="id" value="<%=customerInQueue.getCustomer_in_queue_id()%>" />
 								<input type="submit" class="btn btn-danger btn-small" value="Remover da Fila"/>
 							</form>
+						</td>
+						<td>
+							<%
+							Integer indexOfTheUserCalled = (Integer) request.getAttribute("indexOfTheUserCalled");
+							if(indexOfTheUserCalled != null)
+							{
+								if(indexOfTheUserCalled == customerInQueue.getCustomer_in_queue_id())
+								{
+								%>
+									<div class="alert alert-info">
+										<strong>Sucesso! </strong>
+										Mensagem enviada.
+									</div>
+								<%
+								}
+							}
+							%>
 						</td>
 						
 					</tr>

@@ -209,7 +209,7 @@ public class CustomerRegisterController
 		}
 		else
 		{
-			String telephone = "("+inputTelephonePrefix+")"+inputTelephone;
+			String telephone = inputTelephonePrefix+inputTelephone;
 			
 			if(inputMonthOfBirth.length()==1) inputMonthOfBirth = "0" + inputMonthOfBirth;
 			if(inputDayOfBirth.length()==1) inputDayOfBirth = "0" + inputDayOfBirth;

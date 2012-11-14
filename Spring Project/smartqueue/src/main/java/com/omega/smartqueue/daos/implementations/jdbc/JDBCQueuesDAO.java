@@ -96,7 +96,13 @@ public class JDBCQueuesDAO implements QueuesDAO
 		return jdbcTemplate.query(sql,new Object[] { restaurant_id },new QueuesRowMapper());
 	}
 	
-	private CustomerInQueue selectByCustomerInQueueId(int customer_in_queue_id)
+	/**
+	 * Este método faz uma query no banco de dados e seleciona um
+	 * CustomerInQueue através do seu ID.
+	 * @param customer_id ID do CustomerInQueue que será utilizado na realização da query
+	 * @return O CustomerInQueue correspondente ao ID passado como parâmetro
+	 */
+	public CustomerInQueue selectByCustomerInQueueId(int customer_in_queue_id)
 	{
 		String sql = "SELECT * FROM queues WHERE customer_in_queue_id = ?";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -143,7 +149,7 @@ public class JDBCQueuesDAO implements QueuesDAO
 	
 	/**
 	 * Este método faz uma query no banco de dados e seleciona um
-	 * CustomerInQueue através do seu ID.
+	 * CustomerInQueue através do ID correspondente ao cliente registrado.
 	 * @param customer_id ID do CustomerInQueue que será utilizado na realização da query
 	 * @return O CustomerInQueue correspondente ao ID passado como parâmetro
 	 */
@@ -153,4 +159,5 @@ public class JDBCQueuesDAO implements QueuesDAO
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return (CustomerInQueue) jdbcTemplate.queryForObject(sql,new Object[] { customer_id },new QueuesRowMapper());
 	}
+	
 }

@@ -175,7 +175,7 @@ public class RestaurantRegisterController {
 		}
 		else
 		{
-			String telephone = "("+inputTelephonePrefix+")"+inputTelephone;
+			String telephone = inputTelephonePrefix+inputTelephone;
 
 			Restaurant restaurantToCreate = new Restaurant(	inputName,
 															inputEmail,

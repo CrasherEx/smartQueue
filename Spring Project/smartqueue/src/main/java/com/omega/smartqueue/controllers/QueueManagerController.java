@@ -1,5 +1,6 @@
 package com.omega.smartqueue.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.omega.smartqueue.daos.QueuesDAO;
 import com.omega.smartqueue.daos.RestaurantDAO;
 import com.omega.smartqueue.enums.UserType;
+import com.omega.smartqueue.exceptions.ConnectionAuthenticationException;
+import com.omega.smartqueue.exceptions.MessageSizeException;
+import com.omega.smartqueue.exceptions.NotEnoughCreditsException;
 import com.omega.smartqueue.model.CustomerInQueue;
 import com.omega.smartqueue.model.Restaurant;
+import com.omega.smartqueue.webservices.SMSBRService;
 
 /**
  * Controller responsável pelo gerenciamento da fila.
@@ -66,15 +71,74 @@ public class QueueManagerController
 		}
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-		RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
+		//RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
 		QueuesDAO queuesDAO = (QueuesDAO) context.getBean("QueuesDAO");
 		
-		Restaurant restaurant = restaurantDAO.selectById(userId).get(0);
+		//Restaurant restaurant = restaurantDAO.selectById(userId).get(0);
 		
 		ArrayList<CustomerInQueue> queue = (ArrayList<CustomerInQueue>) queuesDAO.selectCustomersInQueue(userId);
 		request.setAttribute("queue",queue);
 
 		return "queueManager";
+	}
+	
+	/**
+	 * Método responsável por chamar um cliente da fila.
+	 * 
+	 * @param request Request enviado pelo cliente
+	 * @return Página de erro, caso ocorra algum.
+	 * @return Interface da fila, caso o cliente tenha sido chamado com sucesso.
+	 */	
+	@RequestMapping(value = "/callCustomerFromQueue", method = RequestMethod.POST)
+	public String callCustomerFromQueue(HttpServletRequest request)
+	{
+		ArrayList<String> errorMessages = new ArrayList<String>();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+		String inputId = request.getParameter("id");
+		try
+		{
+			Integer id = Integer.parseInt(inputId);
+			QueuesDAO queuesDAO = (QueuesDAO) context.getBean("QueuesDAO");
+			RestaurantDAO restaurantDAO = (RestaurantDAO) context.getBean("RestaurantDAO");
+
+			try
+			{
+				CustomerInQueue customerInQueue = queuesDAO.selectByCustomerInQueueId(id);
+				SMSBRService smsService = new SMSBRService();
+				
+				String mensagem = 		"SmartQueue informa: \n" + 
+										customerInQueue.getCustomer_name() +
+										", sua mesa para " +
+										customerInQueue.getParty() +
+										" pessoa(s) no restaurante " +
+										restaurantDAO.selectById(customerInQueue.getRestaurant_id()).get(0).getName() +
+										" ja esta disponivel.";	
+				
+				smsService.sendSMS("55"+customerInQueue.getTelephone(),mensagem);
+				request.setAttribute("indexOfTheUserCalled",id);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			} catch (MessageSizeException e)
+			{
+				e.printStackTrace();
+			} catch (ConnectionAuthenticationException e)
+			{
+				e.printStackTrace();
+			} catch (NotEnoughCreditsException e)
+			{
+				e.printStackTrace();
+			}
+			
+			return queueManager(request);
+		}
+		catch(NumberFormatException numberFormatException)
+		{
+			errorMessages.add("Id de usuário escolhido para chamar inválido.");
+			request.setAttribute("errorMessages",errorMessages);
+			return "error";
+		}
 	}
 	
 	/**
@@ -96,7 +160,7 @@ public class QueueManagerController
 			QueuesDAO queuesDAO = (QueuesDAO) context.getBean("QueuesDAO");
 
 			try
-			{
+			{;
 				queuesDAO.deleteCustomerInQueue(id);
 			}
 			catch(EmptyResultDataAccessException emptyResultDataAccessException)

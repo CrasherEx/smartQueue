@@ -31,11 +31,20 @@ public interface QueuesDAO
 	 * @param customer_in_queue_id Id do cliente que deve ser deletado da fila.
 	 */
 	public void deleteCustomerInQueue(int customer_in_queue_id);
+	
+	/**
+	 * Este método faz uma query no banco de dados e seleciona um
+	 * CustomerInQueue através do ID correspondente ao cliente registrado.
+	 * @param customer_id ID do CustomerInQueue que será utilizado na realização da query
+	 * @return O CustomerInQueue correspondente ao ID passado como parâmetro
+	 */
+	public CustomerInQueue selectByCustomerId(int customer_id);
+
 	/**
 	 * Este método faz uma query no banco de dados e seleciona um
 	 * CustomerInQueue através do seu ID.
 	 * @param customer_id ID do CustomerInQueue que será utilizado na realização da query
 	 * @return O CustomerInQueue correspondente ao ID passado como parâmetro
 	 */
-	public CustomerInQueue selectByCustomerId(int customer_id);
+	public CustomerInQueue selectByCustomerInQueueId(int customer_in_queue_id);
 }
