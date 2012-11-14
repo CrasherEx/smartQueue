@@ -18,10 +18,24 @@ import com.omega.smartqueue.enums.UserType;
 import com.omega.smartqueue.model.CustomerInQueue;
 import com.omega.smartqueue.model.Restaurant;
 
+/**
+ * Controller responsável pelo gerenciamento da fila.
+ * Neste constam os métodos para adicionar e remover um cliente da fila.
+ * 
+ * @see validators Package com as classes de validação
+ */
+
 @Controller
 public class QueueManagerController 
 {
 
+	/**
+	 * Método responsável pelo manuseio da fila.
+	 * 
+	 * @param request Request enviado pelo cliente.
+	 * @return Página com os erros, caso ocorra algum.
+	 * @return Página da interface do restaurante para manuseio da fila.
+	 */
 	@RequestMapping(value = "/queueManager", method = RequestMethod.GET)
 	public String queueManager(HttpServletRequest request)
 	{
@@ -63,6 +77,13 @@ public class QueueManagerController
 		return "queueManager";
 	}
 	
+	/**
+	 * Método responsável por remover um cliente da fila.
+	 * 
+	 * @param request Request enviado pelo cliente
+	 * @return Página de erro, caso ocorra algum.
+	 * @return Interface da fila, caso o cliente tenha sido deletado com sucesso.
+	 */	
 	@RequestMapping(value = "/removeCustomerFromQueue", method = RequestMethod.POST)
 	public String removeCustomerFromQueue(HttpServletRequest request)
 	{
@@ -95,6 +116,14 @@ public class QueueManagerController
 		}
 	}
 	
+	/**
+	 * Método responsável por adicionar um cliente à fila.
+	 * 
+	 * 
+	 * @param request Request enviado pelo cliente.
+	 * @return Página de erro, caso ocorra algum.
+	 * @return Interface da fila, caso o cliente tenha sido adicionado com sucesso.
+	 */
 	@RequestMapping(value = "/addUserToQueue", method = RequestMethod.POST)
 	public String addUserToQueue(HttpServletRequest request)
 	{	

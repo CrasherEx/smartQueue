@@ -4,9 +4,18 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Esta classe é responsável por validar o valor da string "telephonePrefix"
+ */
+
 public class TelephonePrefixValidator implements SimpleValidator
 {
-
+	/**
+	 * Método que efetivamente valida o valor da string passada como parâmetro
+	 * 
+	 * @param stringToValidate string que será validada
+	 * @return Lista de erros encontrados durante a validação
+	 */
 	public ArrayList<String> validate(String stringToValidate)
 	{
 		ArrayList<String> errors = new ArrayList<String>();

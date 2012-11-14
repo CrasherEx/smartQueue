@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import com.omega.smartqueue.model.Restaurant;
 
 /**
-	 * Verifies if the user selected none or more than one restaurant's queue to join.
-	 * 
-	 * @param restaurantId The ID of the selected queue's restaurant.
-	 * @param restaurants Array containing all restaurants with the restaurantId selected.
-	 * @return errorMessages Array containing all errors found.
-*/
+ * Esta classe é responsável por validar os restaurantes
+ */
+
 public class RestaurantValidator 
 {
+	/**
+	 * Método que efetivamente valida os restaurantes passados como parâmetro
+	 * 
+	 * @param restaurantID ID do restaurante que será validado
+	 * @param restaurants Lista de restaurantes que serão validados
+	 * @return Lista de erros encontrados durante a validação
+	 */
+	
 	public ArrayList<String> validate(Integer restaurantId, ArrayList<Restaurant> restaurants)
 	{
 		ArrayList<String> errorMessages = new ArrayList<String>();

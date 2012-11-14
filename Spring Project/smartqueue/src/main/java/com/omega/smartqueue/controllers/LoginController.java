@@ -17,14 +17,29 @@ import com.omega.smartqueue.enums.UserType;
 import com.omega.smartqueue.model.Customer;
 import com.omega.smartqueue.model.Restaurant;
 
+/**
+ * Controller responsável pela validação do login.
+ * Se tudo correr bem, o usuário é reconhecido e passa a estar logado.
+ * 
+ * @see validators Package com as classes de validação
+ */
+
 @Controller
 public class LoginController {
 	
+	/**
+	 * @return Página de login, onde o usuário deverá preencher os campos de email e senha
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
 		return "login/main";
 	}
 	
+	/**
+	 * Método responsável por deslogar o usuário.
+	 * @param request Request enviado pelo cliente
+	 * @return Pagina principal
+	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -32,6 +47,12 @@ public class LoginController {
 		return "home";
 	}
 	
+	/**
+	 * Método responsável pela validação do campo de email e senha.
+	 * @param request Request enviado pelo cliente
+	 * @return Página principal, caso o login seja efetuado com sucesso.
+	 * @return Página de login com erros sendo exibidos, caso algo de errado ocorra.
+	 */
 	@RequestMapping(value = "/submitLogin", method = RequestMethod.POST)
 	public String submitLogin(HttpServletRequest request)
 	{

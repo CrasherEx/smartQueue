@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import com.omega.smartqueue.model.Customer;
 
 /**
-	 * Verifies if the user is logged and exists on the database.
-	 * 
-	 * @param customerId The ID of the logged user.
-	 * @param customers Array of customers with selected customerId on database.
-	 * @return errorMessages Array containing all errors found.
-*/
+ * Esta classe é responsável por validar os usuários
+ */
+
 public class CustomerValidator 
 {
+	/**
+	 * Método que efetivamente valida os usuários passados como parâmetro
+	 * 
+	 * @param customers lista de usuários que deverão ser validados
+	 * @return Lista de erros encontrados durante a validação
+	 */
 	public ArrayList<String> validate(ArrayList<Customer> customers)
 	{
 		ArrayList<String> errorMessages = new ArrayList<String>();

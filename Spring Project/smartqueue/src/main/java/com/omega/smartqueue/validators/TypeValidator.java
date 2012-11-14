@@ -3,23 +3,20 @@ package com.omega.smartqueue.validators;
 import java.util.ArrayList;
 import com.omega.smartqueue.enums.UserType;
 
-
 /**
-	 * Validates the type of the user, in order to allow or not certain actions.
-*/
+ * Esta classe é responsável por validar o usuário que entrará na fila
+ */
+
 public class TypeValidator
 {
 	
-	public TypeValidator()
-	{
-		
-	}
 	/**
+	 * Método que efetivamente valida o valor da string passada como parâmetro
 	 * 
-	 * @param userId The ID of the logged user.
-	 * @param userType The type of the logged user (Restaurant or Customer).
-	 * @param idealType The specified type (in this case, you must be a customer to join a queue).
-	 * @return errorMessages Array containing all errors found.
+	 * @param userId o ID do usuário a ser validado
+	 * @param userType o tipo do usuário a ser validado
+	 * @param idealType o tipo que representa de qual tipo o usuário deveria ser (sempre customer, neste caso)
+	 * @return Lista de erros encontrados durante a validação
 	 */
 	public ArrayList<String> validate(Integer userId, UserType userType, UserType idealType)
 	{
@@ -43,5 +40,3 @@ public class TypeValidator
 		return errorMessages;
 	}
 }
-
-

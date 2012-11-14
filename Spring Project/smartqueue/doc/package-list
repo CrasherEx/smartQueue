@@ -1,0 +1,8 @@
+com.omega.smartqueue.controllers
+com.omega.smartqueue.daos
+com.omega.smartqueue.daos.implementations.jdbc
+com.omega.smartqueue.daos.implementations.jdbc.resultsetextractors
+com.omega.smartqueue.daos.implementations.jdbc.rowmappers
+com.omega.smartqueue.enums
+com.omega.smartqueue.model
+com.omega.smartqueue.validators

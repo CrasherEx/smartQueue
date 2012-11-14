@@ -1,13 +1,39 @@
 package com.omega.smartqueue.model;
 
+/**
+ * Classe que representa o cliente na fila.
+ * Nela consta todos os dados do cliente na fila de um restaurante
+ */
+
 public class CustomerInQueue
 {
+	/**
+	 * O id do cliente na fila
+	 */
 	int customer_in_queue_id;
+	/**
+	 * O ID do restaurante ao qual o cliente pertence
+	 */
 	int restaurant_id;
+	/**
+	 * O nome do cliente na fila
+	 */
 	String customer_name;
+	/**
+	 * O total de pessoas que compõem o grupo do cliente
+	 */
 	int party;
+	/**
+	 * A posição do cliente na fila
+	 */
 	int position;
+	/**
+	 * O telefone do cliente na fila
+	 */
 	String telephone;
+	/**
+	 * O ID do cliente na fila
+	 */
 	int customer_id;
 	
 	public CustomerInQueue(int customer_in_queue_id, int restaurant_id,

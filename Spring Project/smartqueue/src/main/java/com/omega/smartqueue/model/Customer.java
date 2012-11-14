@@ -3,53 +3,57 @@ package com.omega.smartqueue.model;
 import java.sql.Date;
 
 import com.omega.smartqueue.enums.Gender;
+
 /**
- * @author Aluno5
+ * Classe que representa o cliente na aplicação.
+ * Nela consta todos os dados cadastrais do clientes, que devem ser
+ * fornecidos durante o cadastro.
  */
+
 public class Customer
 {
 	/**
-	 * The customer's id in the MySQL database
+	 * O ID do cliente no banco de dados
 	 */
 	int customer_id;
 	/**
-	 * The customer's first name in the MySQL database 
+	 * O primeiro nome do cliente no banco de dados
 	 */
 	String name;
 	/**
-	 * The customer's last name in the MySQL database
+	 * O último nome do cliente no banco de dados
 	 */
 	String lastName;
 	/**
-	 * The customer's email in MySQL database
+	 * O email do cliente no banco de dados
 	 */
 	String email;
 	/**
-	 * The customer's password in MySQL database
+	 * A senha do cliente no banco de dados
 	 */
 	String password;
 	/**
-	 * The customer's telephone in MySQL database
+	 * O telefone do cliente no banco de dados
 	 */
 	String telephone;
 	/**
-	 * The customer's gender in MySQL database
+	 * O gênero do cliente no banco de dados
 	 */
 	Gender gender;
 	/**
-	 * The customer's date of birth in MySQL database
+	 * A data de nascimento do cliente no banco de dados
 	 */
 	Date dateOfBirth;
 	/**
-	 * The customer's state in MySQL database
+	 * O estado do cliente no banco de dados
 	 */
 	String state;
 	/**
-	 * The customer's city in MySQL database
+	 * A cidade do cliente no banco de dados
 	 */
 	String city;
 	/**
-	 * The customer's address in MySQL database
+	 * O endereço do cliente no banco de dados
 	 */
 	String address;
 	

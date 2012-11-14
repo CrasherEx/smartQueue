@@ -2,9 +2,18 @@ package com.omega.smartqueue.model;
 
 import java.util.List;
 
+/**
+ * Esta classe representa a fila na aplicação.
+ * É composta, basicamente, de uma lista de clientes,
+ * uma vez que apenas clientes podem entrar em filas.
+ *
+ */
+
 public class Queue
 {
-
+	/**
+	 * Lista de clientes na fila
+	 */
 	private List<Customer> queue;
 
 	public Queue()
@@ -12,10 +21,9 @@ public class Queue
 	}
 
 	/**
-	 * Adds someone in the queue.
+	 * Método responsável por adicionar um cliente à fila
 	 * 
-	 * @param customer
-	 *            the customer to be added.
+	 * @param customer Cliente que será adicionado à fila
 	 */
 	public void addCustomer(Customer customer)
 	{
@@ -23,10 +31,9 @@ public class Queue
 	}
 
 	/**
-	 * Deletes someone in the queue.
+	 * Método responsável por deletar um cliente da fila
 	 * 
-	 * @param customer
-	 *            the customer to be deleted.
+	 * @param customer Cliente que será deletado da fila
 	 */
 	public void deleteCustomer(Customer customer)
 	{
@@ -34,9 +41,9 @@ public class Queue
 	}
 
 	/**
-	 * Returns how many people are in the queue.
+	 * Retorna o número de clientes presente na fila
 	 * 
-	 * @return how many objects are in the queue.
+	 * @return Número de clientes na fila
 	 */
 	public int getSize()
 	{
@@ -44,10 +51,10 @@ public class Queue
 	}
 
 	/**
-	 * Returns how many people are in front of someone.
+	 * Retorna a posição do cliente na fila
 	 * 
-	 * @param customer
-	 * @return customer's position in queue.
+	 * @param customer Cliente cuja posição na fila será verificada
+	 * @return posição do cliente na fila
 	 */
 	public int getPosition(Customer customer)
 	{
@@ -55,8 +62,7 @@ public class Queue
 	}
 
 	/**
-	 * Allows someone to update the queue, removing the first person.
-	 * 
+	 * Atualiza a fila, removendo a primeira pessoa.
 	 */
 	public void update()
 	{

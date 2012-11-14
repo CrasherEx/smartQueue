@@ -1,21 +1,49 @@
 package com.omega.smartqueue.model;
 
+/**
+ * Classe que representa o restaurante na aplicação.
+ * Nela consta todos os dados cadastrais do restaurante, que devem ser
+ * fornecidos durante o cadastro.
+ */
+
 public class Restaurant
 {
+	/**
+	 * O ID do restaurante
+	 */
 	int restaurant_id;
+	/**
+	 * Nome do restaurante
+	 */
 	String name;
+	/**
+	 * Email do restaurante
+	 */
 	String email;
+	/**
+	 * Senha do restaurante
+	 */
 	String password;
+	/**
+	 * Telefone do restaurante
+	 */
 	String telephone;
+	/**
+	 * Estado do restaurante
+	 */
 	String state;
+	/**
+	 * Cidade do restaurante
+	 */
 	String city;
+	/**
+	 * Endereço do restaurante
+	 */
 	String address;
+	/**
+	 * Fila do restaurante
+	 */
 	Queue queue = new Queue();
-	
-	// CookType cookType;
-	// Número de mesas / pessoas?
-	// Horário de Funcionamento?
-	// Cardápio? Será uma imagem.. mas onde ficará salva?
 	
 	public int getRestaurant_id() 
 	{

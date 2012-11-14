@@ -22,29 +22,24 @@ import com.omega.smartqueue.model.CustomerInQueue;
 import com.omega.smartqueue.model.Restaurant;
 
 /**
-	 * Controller that coordinates how the customer join the queue and validates its entrance.
-	 * Only customers are able to join queue.
+	 * Controller que coordena como o cliente entra na fila e valida a sua entrada.
+	 * Apenas clientes estão aptos a entrar na fila.
 	 * 
-	 * @author Aluno5
-	 * @version 2.0, November 2012	 
-	 * @see validators Package with the Validators Classes.
+	 * @version 2.0, November 2012
+	 * @see validators Package com as classes de validação.
 */
 
 @Controller
 public class JoinQueueController
 {
-	@RequestMapping(value = "confirmjoinqueue", method = RequestMethod.GET)
-	
 	/**
-	 * @return page that will show any errors.
-	 * @return the confirmation page to join queue.
-	 * @return if the customer successfully joins queue, goes back to home page.
-	 * @param request The request sent by the client
-	 * @return the page that contains
+	 * @return Página que mostrará quaisquer erros
+	 * @return Página de confinrmação para entrar na página
+	 * @param request O request enviado pelo cliente
 	 */
+	@RequestMapping(value = "confirmjoinqueue", method = RequestMethod.GET)
 	public String confirmJoinQueue(HttpServletRequest request)
 	{
-		//
 		HttpSession session = request.getSession();
 		//ArrayLists to save the errors and show it later.
 		ArrayList<String> errorMessages = new ArrayList<String>();
@@ -119,15 +114,12 @@ public class JoinQueueController
 		return "confirmjoinqueue";
 	}
 	
-	@RequestMapping(value = "joinqueue", method = RequestMethod.POST)
-	
 	/**
-	 * @return page that will show any errors.
-	 * @return if the customer successfully joins queue, goes back to home page.
-	 * @param request The request sent by the client
-	 * @return the page that contains
+	 * @return Página que mostrará quaisquer erros
+	 * @return Se o cliente conseguir entrar na fila, volta à página inicial.
+	 * @param request O request enviado pelo cliente
 	 */
-	
+	@RequestMapping(value = "joinqueue", method = RequestMethod.POST)	
 	public String joinQueue(HttpServletRequest request)
 	{	
 		HttpSession session = request.getSession();

@@ -1,5 +1,9 @@
 package com.omega.smartqueue.enums;
 
+/**
+ * Enumeração para gênero masculino e feminino.
+ *
+ */
 public enum Gender
 {
 	MALE("M"),
@@ -17,6 +21,15 @@ public enum Gender
 	{
 		return innerString;
 	}
+	
+	/**
+	 * Converte uma string recebida por parâmetro para uma constante
+	 * de enumeração correspondente.
+	 * 
+	 * @param string String que será convertida em constante de enumeração
+	 * @return Constante de enumeração, caso seja possível converter
+	 * @return null, caso não seja possível converter
+	 */
 	
 	public static Gender toGender(String string)
 	{

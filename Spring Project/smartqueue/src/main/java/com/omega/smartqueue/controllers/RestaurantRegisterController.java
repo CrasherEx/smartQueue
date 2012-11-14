@@ -22,14 +22,36 @@ import com.omega.smartqueue.validators.StateValidator;
 import com.omega.smartqueue.validators.TelephonePrefixValidator;
 import com.omega.smartqueue.validators.TelephoneValidator;
 
+/**
+ * Esse controller é responsável por validar os dados preenchidos no formulário de cadastro do restaurante.
+ * Se os dados estiverem dentro dos padrões, estes serão salvos no banco de dados.
+ * 
+ * @see validators Package com as classes de validação
+ * @see daos Package com as principais interface da aplicação
+ */
+
+
 @Controller
 public class RestaurantRegisterController {
 	
+	/**
+	 * @return Página de registro do restaurante
+	 */
 	@RequestMapping(value = "/restaurantRegister", method = RequestMethod.GET)
 	public String register() {
 		return "register/restaurant/main";
 	}
 	
+	/**
+	 * 
+	 * Se os dados do usuário não forem válidos, a página de cadastro é reaberta exibindo os erros
+	 * nos devidos campos.
+	 * 
+	 * @param request Request enviado pelo servidor.
+	 * @return Página de registro realizado com sucesso se o cadastro for realizado.
+	 * @return Página de cadastro com o formulário e os erros nos devidos campos, caso algo ocorra
+	 * de forma errada.
+	 */
 	@RequestMapping(value = "/submitRestaurantRegister", method = RequestMethod.POST)
 	public String submitRegister(HttpServletRequest request) {
 	

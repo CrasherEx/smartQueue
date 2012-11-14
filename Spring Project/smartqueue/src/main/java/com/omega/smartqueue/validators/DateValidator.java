@@ -3,8 +3,18 @@ package com.omega.smartqueue.validators;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+/**
+ * Esta classe é responsável por validar o valor da string "date"
+ */
+
 public class DateValidator
 {
+	/**
+	 * Método que efetivamente valida o valor da string passada como parâmetro
+	 * 
+	 * @param stringToValidate string que será validada
+	 * @return Lista de erros encontrados durante a validação
+	 */
 	public ArrayList<String> validate(String dayToValidade,String monthToValidate,String yearToValidate)
 	{
 		ArrayList<String> errors = new ArrayList<String>();
